@@ -1,0 +1,61 @@
+Assignment - In progress
+
+Complete the form, then choose the appropriate button at the bottom.
+Title 	HW2: Contacts UIs
+Due 	Sep 26, 2011 5:00 pm
+Status 	Not Started
+Grade Scale 	Points (max 4.0)
+Modified by instructor 	Sep 19, 2011 10:29 pm
+Instructions
+In this assignment, you'll create four UIs for displaying and editing contact information:
+
+    Display Contact Details - portrait
+    Display Contact Details - landscape
+    Edit Contact Details - portrait
+    Edit Contact Details - landscape
+
+These UIs should support the following contact information:
+
+    Display Name
+    First Name
+    Last Name
+    Birthday
+    Preferred contact time (start and end)
+    Three phone numbers (home, work, mobile)
+    email address
+    Postal Address
+
+You will hardcode these data in the Activity classes for now. 
+
+For now, do not make any areas collapsible, and hardcode the names of the phone fields.
+
+Be creative on how you lay these out, but make sure they look "reasonable". For example, if you have two text fields on top of each other, they should most often be the same size and be lined up (unless you come up with an interesting layout that doesn't require that).  
+
+For this assignment, create three activities:
+
+    DisplayContactActivity - displays a dummy contact.
+    EditContactActivity - edits the dummy contact
+    ContactsActivity - displays two buttons ("Display" and "Edit") that start the Display and Edit activities when pressed
+        Launch one of these using an explicit intent, and another using a custom action and intent filter.
+
+The dummy contact data should be hardcoded for now; edits will not change how the data is displayed in the display activity.
+
+NOTES:
+
+    The hardcoded data must not appear in the xml layout; it must be set in the activity. (We will read it from a content provider later) 
+    Be sure to externalize your strings properly - the xml layout should not have any hardcoded strings for display.
+    Be sure to name your projects starting with your prefix - this can be lastname.firstname or your domain name, if you have one, reversed (for example, mine is com.javadude). Use this same prefix for the start of your android package name.
+
+You can create the zip to upload as follows:
+
+    Right-click your project(s) and choose Export...
+    Under "General" choose "Archive File" and press Next
+    Make sure the following options are checked:
+        Save in zip format
+        Compress the contents of the file
+        Create directory structure for files
+    Choose the zip file to create in the To Archive File box.
+    The name of the zip file should be the same as your project name, followed by .zip
+    Press Finish.
+
+Submit your project by 6pm on the day it's due.

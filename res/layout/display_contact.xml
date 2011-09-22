@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TableLayout android:layout_height="wrap_content" android:id="@+id/tableLayout1" android:layout_width="match_parent">
+        <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        	<TextView android:text="@string/displayNameLabel" android:id="@+id/displayNameLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        	<TextView android:text="@string/displayNameValue" android:id="@+id/displayNameValue" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:text="@string/firstNameLabel" android:id="@+id/firstNameLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        	<TextView android:text="@string/firstNameValue" android:id="@+id/firstNameValue" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow3" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:text="@string/lastNameLabel" android:id="@+id/lastNameLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        	<TextView android:text="@string/lastNameValue" android:id="@+id/lastNameValue" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        </TableRow>
+    </TableLayout>
+    
+</LinearLayout>

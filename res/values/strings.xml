@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Contacts - 605.486</string>
-    <string name="display">Display Contact</string>
-    <string name="edit">Edit Contact</string>
+    <string name="displayButton">Display Contact</string>
+    <string name="editButton">Edit Contact</string>
+    
+    <string name="displayNameLabel">Display Name</string>
+    <string name="firstNameLabel">First</string>
+    <string name="lastNameLabel">Last Name</string>
+    <string name="birthdateLabel">Birthday</string>
+    <string name="preferredContactTimeLabel">Best time to Call</string>
+    <string name="homePhoneLabel">Home</string>
+    <string name="workPhoneLabel">Work</string>
+    <string name="mobilePhoneLabel">Mobile</string>
+    <string name="emailLabel">Email</string>
+    <string name="addressLabel">Address</string>
+    
+    <string name="displayNameValue"></string>
+    <string name="firstNameValue"></string>
+    <string name="lastNameValue"></string>
 </resources>

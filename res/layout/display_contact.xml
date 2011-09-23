@@ -9,20 +9,68 @@
 			android:id="@+id/tableRow1" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 			<TextView style="@style/ContactLabel" android:text="@string/displayNameLabel"/>
-			<TextView style="@style/ContactDisplayText" android:text="@string/displayNameValue" android:id="@+id/displayNameValue"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/displayNameValue"/>
 		</TableRow>
 		<TableRow android:layout_margin="10dp" android:background="#95A18A"
 			android:id="@+id/tableRow2" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 			<TextView style="@style/ContactLabel" android:text="@string/firstNameLabel"/>
-			<TextView style="@style/ContactDisplayText" android:text="@string/firstNameValue" android:id="@+id/firstNameValue"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/firstNameValue"/>
 		</TableRow>
 		<TableRow android:layout_margin="10dp" android:background="#95A18A"
 			android:id="@+id/tableRow3" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 			<TextView style="@style/ContactLabel" android:text="@string/lastNameLabel"/>
-			<TextView style="@style/ContactDisplayText" android:text="@string/lastNameValue" android:id="@+id/lastNameValue"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/lastNameValue"/>
 		</TableRow>
+		
+		
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow2" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/birthdateLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/birthdateValue"/>
+		</TableRow>
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/preferredContactTimeLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/preferredContactTimeValue"/>
+		</TableRow>
+		
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow2" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/homePhoneLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/homePhoneValue"/>
+		</TableRow>
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/workPhoneLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/workPhoneValue"/>
+		</TableRow>
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/mobilePhoneLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/mobilePhoneValue"/>
+		</TableRow>	
+		
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/emailLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/emailValue"/>
+		</TableRow>
+		
+		<TableRow android:layout_margin="10dp" android:background="#95A18A"
+			android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView style="@style/ContactLabel" android:text="@string/addressLabel"/>
+			<TextView style="@style/ContactDisplayText" android:id="@+id/addressValue"/>
+		</TableRow>		
+		
 	</TableLayout>
 
 </LinearLayout>

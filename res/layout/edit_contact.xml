@@ -9,18 +9,18 @@
 			android:id="@+id/tableRow1" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 			<TextView style="@style/ContactLabel" android:text="@string/displayNameLabel"/>
-			<EditText android:id="@+id/editDisplayNameValue" style="@style/ContactEditText" android:text="@string/displayNameValue"/>
+			<EditText style="@style/ContactEditText" android:id="@+id/editDisplayNameValue"/>
 		</TableRow>
 		<TableRow android:layout_margin="8sp" android:background="#95A18A"
 			android:id="@+id/tableRow2" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 			<TextView style="@style/ContactLabel" android:text="@string/firstNameLabel"/>
-			<EditText style="@style/ContactEditText" android:text="@string/firstNameValue" android:id="@+id/editFirstNameValue"/>
+			<EditText style="@style/ContactEditText" android:id="@+id/editFirstNameValue"/>
 		</TableRow>
 		<TableRow android:layout_margin="8sp" android:background="#95A18A" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 			<TextView style="@style/ContactLabel" android:text="@string/lastNameLabel"/>
-			<EditText style="@style/ContactEditText" android:text="@string/lastNameValue" android:id="@+id/editLastNameValue"/>
+			<EditText style="@style/ContactEditText" android:id="@+id/editLastNameValue"/>
 		</TableRow>
 	</TableLayout>
 

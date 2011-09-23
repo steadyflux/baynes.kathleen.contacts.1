@@ -18,8 +18,4 @@
     <string name="emailLabel">Email</string>
     <string name="addressLabel">Address</string>
     
-    <string name="displayNameValue"></string>
-    <string name="firstNameValue"></string>
-    <string name="lastNameValue"></string>
-    
 </resources>

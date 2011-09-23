@@ -28,13 +28,18 @@ public class ContactLauncherActivity extends Activity {
 			public void onClick(View v) {
 				Log.d(TAG, "Click occurred for " + activity);
 				Intent intent = new Intent("baynes.kathleen.contacts." + activity);
-				//intent.putExtras(getExtrasForActivity(activity));
-				startActivity(intent);
+				startActivity(setExtrasForActivity(intent, activity));
 			}
 		});
 	}
 
-	protected Intent getExtrasForActivity(String activity) {
-		return null;
+	protected Intent setExtrasForActivity(Intent intent, String activity) {
+		Log.d(TAG, "Setting Extras for " + activity);
+
+		intent.putExtra("displayName", "Ellie C.");
+		intent.putExtra("firstName", "Eleanor");
+		intent.putExtra("lastName", "Caltagirone");
+		
+		return intent;
 	}
 }

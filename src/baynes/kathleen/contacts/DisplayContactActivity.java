@@ -21,7 +21,7 @@ public class DisplayContactActivity extends Activity {
         name = getIntent().getExtras().getString("lastName");
         ((TextView) findViewById(R.id.lastNameValue)).setText(name);
         
-//        name = getIntent().getExtras().getString("firstName");
-//        ((TextView) findViewById(R.id.firstNameValue)).setText(name);
+        name = getIntent().getExtras().getString("birthdate");
+        ((TextView) findViewById(R.id.birthdateValue)).setText(name);
     }
 }

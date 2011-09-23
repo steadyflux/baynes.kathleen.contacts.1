@@ -3,30 +3,24 @@
 	android:orientation="vertical" android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<TableLayout android:layout_height="wrap_content"
-		android:layout_width="match_parent" android:stretchColumns="*"
+		android:layout_width="match_parent"
 		android:background="#3A1E20" >
-		<TableRow android:layout_margin="10sp" android:background="#95A18A"
+		<TableRow android:layout_margin="8sp" android:background="#95A18A"
 			android:id="@+id/tableRow1" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
-			<TextView style="@style/ContactLabel" android:text="@string/displayNameLabel"></TextView>
-			<EditText style="@style/ContactEditText" android:text="@string/displayNameValue" android:id="@+id/editDisplayNameValue">
-				<requestFocus></requestFocus>
-			</EditText>
+			<TextView style="@style/ContactLabel" android:text="@string/displayNameLabel"/>
+			<EditText android:id="@+id/editDisplayNameValue" style="@style/ContactEditText" android:text="@string/displayNameValue"/>
 		</TableRow>
-		<TableRow android:layout_margin="10sp" android:background="#95A18A"
+		<TableRow android:layout_margin="8sp" android:background="#95A18A"
 			android:id="@+id/tableRow2" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
-			<TextView style="@style/ContactLabel" android:text="@string/firstNameLabel"></TextView>
-			<EditText style="@style/ContactEditText" android:text="@string/firstNameValue" android:id="@+id/editFirstNameValue">
-				<requestFocus></requestFocus>
-			</EditText>
+			<TextView style="@style/ContactLabel" android:text="@string/firstNameLabel"/>
+			<EditText style="@style/ContactEditText" android:text="@string/firstNameValue" android:id="@+id/editFirstNameValue"/>
 		</TableRow>
-		<TableRow android:layout_margin="10sp" android:background="#95A18A" android:layout_width="wrap_content"
+		<TableRow android:layout_margin="8sp" android:background="#95A18A" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
-			<TextView style="@style/ContactLabel" android:text="@string/lastNameLabel"></TextView>
-			<EditText style="@style/ContactEditText" android:text="@string/lastNameValue" android:id="@+id/editLastNameValue">
-				<requestFocus></requestFocus>
-			</EditText>
+			<TextView style="@style/ContactLabel" android:text="@string/lastNameLabel"/>
+			<EditText style="@style/ContactEditText" android:text="@string/lastNameValue" android:id="@+id/editLastNameValue"/>
 		</TableRow>
 	</TableLayout>
 

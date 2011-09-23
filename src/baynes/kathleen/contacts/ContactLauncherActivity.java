@@ -40,6 +40,8 @@ public class ContactLauncherActivity extends Activity {
 		intent.putExtra("firstName", "Eleanor");
 		intent.putExtra("lastName", "Caltagirone");
 		
+		intent.putExtra("birthdate", "03/28/2011" );
+		
 		return intent;
 	}
 }

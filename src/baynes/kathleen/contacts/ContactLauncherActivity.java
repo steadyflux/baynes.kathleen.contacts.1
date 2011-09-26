@@ -7,10 +7,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+// TODO: Auto-generated Javadoc
+/**
+ * This class simply leads to the edit and display screens
+ */
 public class ContactLauncherActivity extends Activity {
+    
+    /** Based off in-class example */
     protected static final String TAG = "baynes.kathleen.contacts.ContactLauncherActivity";
 
-	/** Called when the activity is first created. */
+	/**
+	 * Called when the activity is first created.
+	 *
+	 * @param savedInstanceState the saved instance state
+	 */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +30,12 @@ public class ContactLauncherActivity extends Activity {
         setButtonListener(R.id.displayContact, "display");
     }
 
+	/**
+	 * Sets the button listener to direct to the edit and display activities
+	 *
+	 * @param button_id the button_id
+	 * @param activity the activity
+	 */
 	private void setButtonListener(int button_id, final String activity) {
 		Button button = (Button) findViewById(button_id);
         button.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +49,13 @@ public class ContactLauncherActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Sets most of the initial contact information.
+	 *
+	 * @param intent the intent we are adding the data to
+	 * @param activity the activity we are directing to (display vs. edit)
+	 * @return the intent modified with extras
+	 */
 	protected Intent setExtrasForActivity(Intent intent, String activity) {
 		Log.d(TAG, "Setting Extras for " + activity);
 

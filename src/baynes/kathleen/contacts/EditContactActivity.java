@@ -12,26 +12,48 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-
-//Borrows heavily from: http://developer.android.com/resources/tutorials/views/hello-timepicker.html
+/**
+ * 
+ * This class displays a contact's information and allows editing of the various fields
+ * 
+ * Borrows heavily from: http://developer.android.com/resources/tutorials/views/hello-timepicker.html
+ * 
+ */
 public class EditContactActivity extends Activity {
 
+	/** The starting hour for the preferred contact time */
 	protected int mStartHour;
+	
+	/** The starting minute for the preferred contact time */
 	protected int mStartMinute;
 	
+	/** The end hour for the preferred contact time */
 	protected int mEndHour;
+	
+	/** The end minute for the preferred contact time */
 	protected int mEndMinute;
 
+	/** The year for the contact's birthday */
 	protected int mYear;
+	
+	/** The month for the contact's birthday (remember to use zero index!) */
 	protected int mMonth;
+	
+	/** The day of the month for the contact's birthday */
 	protected int mDayOfMonth;
 	
-	protected static final int BIRTHDAY_DIALOG_ID = 0;
-	protected static final int START_TIME_DIALOG_ID = 1;
-	protected static final int END_TIME_DIALOG_ID = 2;
+	/** identifies the birthday DatePicker dialog */
+	private static final int BIRTHDAY_DIALOG_ID = 0;
 	
-
-	// the callback received when the user "sets" the time in the dialog
+	/** identifies the preferred contact start time TimePicker dialog */
+	private static final int START_TIME_DIALOG_ID = 1;
+	
+	/** identifies the preferred contact end time TimePicker dialog */
+	private static final int END_TIME_DIALOG_ID = 2;
+	
+	/** the callback received when the user sets the start time in the TimePicker dialog 
+	 *  can most likely be refactored into shared listener for start and end time 
+	 */
 	private TimePickerDialog.OnTimeSetListener mStartTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -41,6 +63,9 @@ public class EditContactActivity extends Activity {
 		}
 	};
 	
+	/** the callback received when the user sets the end time in the TimePicker dialog 
+	 *  can most likely be refactored into shared listener for start and end time 
+	 */
 	private TimePickerDialog.OnTimeSetListener mEndTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -50,6 +75,7 @@ public class EditContactActivity extends Activity {
 		}
 	};
 	
+	/** the callback received when the user sets the birthday in the DatePicker dialog  */
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		@Override
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -61,13 +87,17 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
+	/** Draws the screen and sets up the values */
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_contact);
-
 		String name = null;
 
+		//unpack the bundled extras and set the fields
 		name = getIntent().getExtras().getString("displayName");
 		((EditText) findViewById(R.id.editDisplayNameValue)).setText(name);
 
@@ -98,7 +128,7 @@ public class EditContactActivity extends Activity {
 			}
 		});
 
-		//dummmy initialize
+		//dummmy initialization.
 		mStartHour = 18;
 		mStartMinute = 0;
 		mEndHour = 21;
@@ -107,6 +137,7 @@ public class EditContactActivity extends Activity {
 		mDayOfMonth = 28;
 		mMonth = 2;
 		
+		//set initial values based on initialized fields
 		updateBirthdate();
 		updatePreferredTimeDisplay();
 
@@ -127,6 +158,10 @@ public class EditContactActivity extends Activity {
 
 	}
 
+	/** sets up the dialogs and adds their respective listeners*/
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateDialog(int)
+	 */
 	@Override
 	protected Dialog onCreateDialog(int id) {
 	    switch (id) {
@@ -144,7 +179,9 @@ public class EditContactActivity extends Activity {
 	}
 
 	
-	// updates the time we display in the TextView
+	/**
+	 * Update preferred time display TextView. Format: HH:MM AM|PM - HH:MM AM|PM 
+	 */
 	private void updatePreferredTimeDisplay() {
 		((TextView) findViewById(R.id.preferredContactTimeValue)).setText(
 	        new StringBuilder()
@@ -157,6 +194,12 @@ public class EditContactActivity extends Activity {
 	                .append((mEndHour < 12) ? " AM" : " PM"));
 	}
 
+	/**
+	 * Pad single digit fields as needed
+	 * From: http://developer.android.com/resources/tutorials/views/hello-timepicker.html
+	 * @param valueToPad the value to pad
+	 * @return the string
+	 */
 	private String pad(int valueToPad) {
 	    if (valueToPad >= 10)
 	        return String.valueOf(valueToPad);
@@ -165,6 +208,9 @@ public class EditContactActivity extends Activity {
 	}
 	
 
+	/**
+	 * Update birthday TextView using set fields.
+	 */
 	protected void updateBirthdate() {
 		((TextView) findViewById(R.id.birthdateValue)).setText(
 			new StringBuilder()

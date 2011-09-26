@@ -4,14 +4,24 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+/**
+ *  This class displays a contact's information
+ */
 public class DisplayContactActivity extends Activity {
 
+	/** Draws the screen and sets up the values 
+	 * @param savedInstanceState the saved instance state
+	 */
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_contact);
         String name = null;
         
+        //unpack the bundled extras and set the fields
         name = getIntent().getExtras().getString("displayName");
         ((TextView) findViewById(R.id.displayNameValue)).setText(name);
         

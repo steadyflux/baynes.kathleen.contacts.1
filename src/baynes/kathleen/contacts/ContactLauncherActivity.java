@@ -42,10 +42,6 @@ public class ContactLauncherActivity extends Activity {
 		
 		intent.putExtra("birthdate", "03/28/2011" );
 		
-		intent.putExtra("preferredCallTimeStart", "6:00 PM" );
-		
-		intent.putExtra("preferredCallTimeEnd", "9:00 PM" );
-		
 		intent.putExtra("homeNumber", "111-222-3333" );
 		intent.putExtra("workNumber", "111-222-3334" );
 		intent.putExtra("mobileNumber", "111-222-3335" );

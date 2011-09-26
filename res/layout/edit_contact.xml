@@ -28,7 +28,17 @@
 				android:id="@+id/tableRow4" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/birthdateLabel" />
-				<DatePicker style="@style/ContactEditText" android:id="@+id/editBirthdateValue" />
+				<TableLayout>
+					<TableRow>
+						<TextView style="@style/ContactDisplayText" android:id="@+id/birthdateValue" />
+					</TableRow>
+					<TableRow>
+						<Button android:id="@+id/editBirthdate"
+							android:layout_width="wrap_content" android:layout_height="wrap_content"
+							android:text="Edit Birthday" />
+
+					</TableRow>
+				</TableLayout>
 			</TableRow>
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow5" android:layout_width="wrap_content"
@@ -36,12 +46,19 @@
 				<TextView style="@style/ContactLabel" android:text="@string/preferredContactTimeLabel" />
 				<TableLayout>
 					<TableRow>
-						<TimePicker android:id="@+id/timePicker1"
-							android:layout_width="match_parent" android:layout_height="match_parent"></TimePicker>
+						<TextView style="@style/ContactDisplayText" android:id="@+id/preferredContactTimeValue" />
 					</TableRow>
 					<TableRow>
-						<TimePicker android:id="@+id/timePicker2"
-							android:layout_width="match_parent" android:layout_height="match_parent"></TimePicker>
+						<Button android:id="@+id/editPreferredContactTimeStart"
+							android:layout_width="wrap_content" android:layout_height="wrap_content"
+							android:text="Edit Start Time" />
+
+					</TableRow>
+					<TableRow>
+						<Button android:id="@+id/editPreferredContactTimeEnd"
+							android:layout_width="wrap_content" android:layout_height="wrap_content"
+							android:text="Edit End Time" />
+
 					</TableRow>
 				</TableLayout>
 			</TableRow>
@@ -50,7 +67,7 @@
 				android:id="@+id/tableRow6" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/homePhoneLabel" />
-				<EditText android:id="@+id/editText2"
+				<EditText android:id="@+id/editHomePhoneValue"
 					android:layout_height="wrap_content" android:inputType="phone"
 					android:layout_width="wrap_content"></EditText>
 			</TableRow>
@@ -58,7 +75,7 @@
 				android:id="@+id/tableRow7" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/workPhoneLabel" />
-				<EditText android:id="@+id/editText3"
+				<EditText android:id="@+id/editWorkPhoneValue"
 					android:layout_height="wrap_content" android:inputType="phone"
 					android:layout_width="wrap_content"></EditText>
 			</TableRow>
@@ -66,7 +83,7 @@
 				android:id="@+id/tableRow8" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/mobilePhoneLabel" />
-				<EditText android:id="@+id/editText4"
+				<EditText android:id="@+id/editMobilePhoneValue"
 					android:layout_height="wrap_content" android:inputType="phone"
 					android:layout_width="wrap_content"></EditText>
 			</TableRow>
@@ -75,7 +92,7 @@
 				android:id="@+id/tableRow9" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/emailLabel" />
-				<EditText android:id="@+id/editText1"
+				<EditText android:id="@+id/editEmailValue"
 					android:layout_height="wrap_content" android:inputType="textEmailAddress"
 					android:layout_width="wrap_content">
 					<requestFocus></requestFocus>
@@ -86,7 +103,7 @@
 				android:id="@+id/tableRow10" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/addressLabel" />
-				<EditText android:id="@+id/editText8"
+				<EditText android:id="@+id/editAddressValue"
 					android:layout_height="wrap_content" android:inputType="textPostalAddress"
 					android:layout_width="wrap_content"></EditText>
 			</TableRow>

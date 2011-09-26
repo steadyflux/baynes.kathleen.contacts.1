@@ -24,11 +24,8 @@ public class DisplayContactActivity extends Activity {
         name = getIntent().getExtras().getString("birthdate");
         ((TextView) findViewById(R.id.birthdateValue)).setText(name);
         
-        StringBuffer sb = new StringBuffer();
-        sb.append(getIntent().getExtras().getString("preferredCallTimeStart"));
-        sb.append(" - ");
-        sb.append(getIntent().getExtras().getString("preferredCallTimeEnd"));
-        ((TextView) findViewById(R.id.preferredContactTimeValue)).setText(sb.toString());
+        //dummy initialization
+        ((TextView) findViewById(R.id.preferredContactTimeValue)).setText("6:00 PM - 9:00 PM");
         
         name = getIntent().getExtras().getString("homeNumber");
         ((TextView) findViewById(R.id.homePhoneValue)).setText(name);

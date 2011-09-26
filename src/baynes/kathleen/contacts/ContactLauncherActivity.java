@@ -48,7 +48,7 @@ public class ContactLauncherActivity extends Activity {
 		
 		intent.putExtra("email", "ebc0328@example.com" );
 		
-		intent.putExtra("address", "5786 Flagflower Place\nColumbia, MD 21045" );
+		intent.putExtra("address", "5786 Flagflower Place\r\nColumbia, MD 21045" );
 		
 		return intent;
 	}

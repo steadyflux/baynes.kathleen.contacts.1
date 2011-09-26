@@ -59,7 +59,7 @@ public class EditContactActivity extends Activity {
 			mDayOfMonth = dayOfMonth;
 			updateBirthdate();
 		}
-	};	
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class EditContactActivity extends Activity {
 		((TextView) findViewById(R.id.editEmailValue)).setText(name);
 
 		name = getIntent().getExtras().getString("address");
-		((TextView) findViewById(R.id.editAddressValue)).setText(name);
+		((TextView) findViewById(R.id.editAddressValue)).setText(name, TextView.BufferType.EDITABLE);
 
 	}
 

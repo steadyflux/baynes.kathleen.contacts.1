@@ -33,10 +33,9 @@
 						<TextView style="@style/ContactDisplayText" android:id="@+id/birthdateValue" />
 					</TableRow>
 					<TableRow>
-						<Button android:id="@+id/editBirthdate"
+						<Button style="@style/ContactDisplayText" android:id="@+id/editBirthdate"
 							android:layout_width="wrap_content" android:layout_height="wrap_content"
 							android:text="Edit Birthday" />
-
 					</TableRow>
 				</TableLayout>
 			</TableRow>
@@ -49,16 +48,14 @@
 						<TextView style="@style/ContactDisplayText" android:id="@+id/preferredContactTimeValue" />
 					</TableRow>
 					<TableRow>
-						<Button android:id="@+id/editPreferredContactTimeStart"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"
+						<Button style="@style/ContactDisplayText" 
+							android:id="@+id/editPreferredContactTimeStart"
 							android:text="Edit Start Time" />
-
 					</TableRow>
 					<TableRow>
-						<Button android:id="@+id/editPreferredContactTimeEnd"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"
+						<Button style="@style/ContactDisplayText" 
+							android:id="@+id/editPreferredContactTimeEnd"
 							android:text="Edit End Time" />
-
 					</TableRow>
 				</TableLayout>
 			</TableRow>
@@ -67,45 +64,39 @@
 				android:id="@+id/tableRow6" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/homePhoneLabel" />
-				<EditText android:id="@+id/editHomePhoneValue"
-					android:layout_height="wrap_content" android:inputType="phone"
-					android:layout_width="wrap_content"></EditText>
+				<EditText style="@style/ContactEditText" android:id="@+id/editHomePhoneValue"
+					android:inputType="phone"/>
 			</TableRow>
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow7" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/workPhoneLabel" />
-				<EditText android:id="@+id/editWorkPhoneValue"
-					android:layout_height="wrap_content" android:inputType="phone"
-					android:layout_width="wrap_content"></EditText>
+				<EditText style="@style/ContactEditText" android:id="@+id/editWorkPhoneValue"
+					android:inputType="phone"/>
 			</TableRow>
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow8" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/mobilePhoneLabel" />
-				<EditText android:id="@+id/editMobilePhoneValue"
-					android:layout_height="wrap_content" android:inputType="phone"
-					android:layout_width="wrap_content"></EditText>
+				<EditText style="@style/ContactEditText" android:id="@+id/editMobilePhoneValue"
+					android:inputType="phone"/>
 			</TableRow>
 
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow9" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/emailLabel" />
-				<EditText android:id="@+id/editEmailValue"
-					android:layout_height="wrap_content" android:inputType="textEmailAddress"
-					android:layout_width="wrap_content">
-					<requestFocus></requestFocus>
-				</EditText>
+				<EditText style="@style/ContactEditText" android:id="@+id/editEmailValue"
+					android:inputType="textEmailAddress"/>
 			</TableRow>
 
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow10" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<TextView style="@style/ContactLabel" android:text="@string/addressLabel" />
-				<EditText android:id="@+id/editAddressValue"
-					android:layout_height="wrap_content" android:inputType="textPostalAddress"
-					android:layout_width="wrap_content"></EditText>
+				<EditText style="@style/ContactEditText" android:id="@+id/editAddressValue"
+					android:lines="3"
+					android:gravity="top|left"/>
 			</TableRow>
 
 

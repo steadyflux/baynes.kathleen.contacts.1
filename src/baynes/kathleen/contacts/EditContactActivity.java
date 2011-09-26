@@ -13,12 +13,13 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 /**
- * 
- * This class displays a contact's information and allows editing of the various fields
+ * This Activity displays static (at the moment) data related to a contact and
+ * enables editing (but not saving) of the contents of each field.
  * 
  * Borrows heavily from: http://developer.android.com/resources/tutorials/views/hello-timepicker.html
  * 
- */
+ * @author <A HREF="mailto:ktbaynes@gmail.com">Kathleen Baynes</A>
+**/
 public class EditContactActivity extends Activity {
 
 	/** The starting hour for the preferred contact time */

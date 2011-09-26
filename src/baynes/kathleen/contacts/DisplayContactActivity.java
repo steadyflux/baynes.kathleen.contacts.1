@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 /**
- *  This class displays a contact's information
- */
+ * This Activity displays static (at the moment) data related to a contact.
+ * 
+ * @author <A HREF="mailto:ktbaynes@gmail.com">Kathleen Baynes</A>
+**/
 public class DisplayContactActivity extends Activity {
 
 	/** Draws the screen and sets up the values 

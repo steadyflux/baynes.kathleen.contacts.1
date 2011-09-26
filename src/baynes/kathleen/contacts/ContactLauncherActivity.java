@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-// TODO: Auto-generated Javadoc
 /**
- * This class simply leads to the edit and display screens
- */
+ * This is the main Activity to be launched upon starting this application. It includes buttons linking to
+ * both the DisplayContactActivity and the EditContactActivity
+ * 
+ * @author <A HREF="mailto:ktbaynes@gmail.com">Kathleen Baynes</A>
+**/
 public class ContactLauncherActivity extends Activity {
     
     /** Based off in-class example */

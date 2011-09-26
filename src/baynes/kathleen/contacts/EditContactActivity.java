@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class EditContactActivity extends Activity {
 
@@ -26,5 +25,7 @@ public class EditContactActivity extends Activity {
         ((EditText) findViewById(R.id.editLastNameValue)).setText(name);
         
         ((DatePicker) findViewById(R.id.editBirthdateValue)).init(2011, 02, 28, null);
+        
+        
     }
 }

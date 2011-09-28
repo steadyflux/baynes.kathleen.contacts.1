@@ -1,5 +1,10 @@
 package baynes.kathleen.contacts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import baynes.kathleen.contacts.models.Contact;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +31,19 @@ public class ContactLauncherActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        //setContentView(R.layout.main);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.contact_list);
+        final List<Contact> contacts = new ArrayList<Contact>();
         
+        contacts.add(new Contact("ccotard", "Caden", "Cotard", "111-222-3333", "111-222-3334", "111-222-3335", 
+        		"ccotard@example.com", "", "04/25/1955", "03:00 AM", "08:00 AM"));
+        contacts.add(new Contact("alack", "Adele", "Lack", "111-222-3336", "111-222-3337", "111-222-3338", 
+        		"alack@example.com", "", "02/12/1966", "05:00 AM", "10:00 AM"));
+        contacts.add(new Contact("ocotard", "Olive", "Cotard", "111-222-3339", "111-222-3340", "111-222-3341", 
+        		"ocotard@example.com", "", "01/24/1997", "05:00 AM", "10:00 AM"));
+        contacts.add(new Contact("ckeen", "Claire", "Keen", "111-222-3342", "111-222-3343", "111-222-3344", 
+        		"ckeen@example.com", "", "11/01/1977", "05:00 PM", "10:00 PM"));
         setButtonListener(R.id.editContact, "edit");
         setButtonListener(R.id.displayContact, "display");
     }

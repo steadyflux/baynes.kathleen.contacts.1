@@ -1,62 +1,31 @@
-baynes.kathleen.contacts.1 = Assignment 2 for 605.486
 Assignment - In progress
 
 Complete the form, then choose the appropriate button at the bottom.
-Title 	HW2: Contacts UIs
-Due 	Sep 26, 2011 5:00 pm
+Title 	HW3: Lists of Contacts
+Due 	Oct 3, 2011 6:00 pm
 Status 	Not Started
 Grade Scale 	Points (max 4.0)
-Modified by instructor 	Sep 19, 2011 10:29 pm
+Modified by instructor 	Sep 27, 2011 1:34 pm
 Instructions
-In this assignment, you'll create four UIs for displaying and editing contact information:
+ In this assignment, you'll add a ListView to your contacts application. (you can extend ListActivity if you'd like, which shortens the setup a wee bit - I didn't use it in class because I wanted to be more explicit about what's going on).
 
-    Display Contact Details - portrait
-    Display Contact Details - landscape
-    Edit Contact Details - portrait
-    Edit Contact Details - landscape
+Do the following
 
-These UIs should support the following contact information:
+    Create a new activity that creates a list of dummy contacts and displays them in a ListView. Feel free to use a single TextView to represent entries in the list, and you can use toString() in your contact objects to get the display value. (Note that in a real app I would not recommend using toString() for anything other that debugging/logging).
 
-    Display Name
-    First Name
-    Last Name
-    Birthday
-    Preferred contact time (start and end)
-    Three phone numbers (home, work, mobile)
-    email address
-    Postal Address
+    If you would like to try it, you can create a more complex entry view that displays the contact name and maybe a phone number. Not required, and no penalty if you do not do this, but could be interesting to try if you have the time.
+    When a contact in the list is clicked, start your "display contact" activity. Use startActivityForResult() and set up the appropriate callback to receive the result. Pass the contact in the "extras" for the intent.
 
-You will hardcode these data in the Activity classes for now. 
+    (Note that the contact will need to be serializable; you can experiment with parcelable if you'd like - see http://shri.blog.kraya.co.uk/2010/04/26/android-parcel-data-to-pass-between-activities-using-parcelable-classes/ for a good example, but it's a bit of extra work. Apparently it's much faster than using serializable on Android)
+    Change your "display contact" activity to read the contact to be displayed from the Intent and display it
 
-For now, do not make any areas collapsible, and hardcode the names of the phone fields.
+     
+    Add a menu item to "display contact" named "Edit" - when clicked, send that contact to your "edit contact" activity (again via startActivityForResult)
 
-Be creative on how you lay these out, but make sure they look "reasonable". For example, if you have two text fields on top of each other, they should most often be the same size and be lined up (unless you come up with an interesting layout that doesn't require that).  
+     
+    Modify your "edit contact" activity to read the contact from the Intent and edit it. Add "save" and "revert" buttons to this activity. "Save" should send the modified contact back (and finish()); "Revert" should just return RESULT_CANCELED.
 
-For this assignment, create three activities:
+     
+    Update the contact  as you progress back through the display and list views
 
-    DisplayContactActivity - displays a dummy contact.
-    EditContactActivity - edits the dummy contact
-    ContactsActivity - displays two buttons ("Display" and "Edit") that start the Display and Edit activities when pressed
-        Launch one of these using an explicit intent, and another using a custom action and intent filter.
-
-The dummy contact data should be hardcoded for now; edits will not change how the data is displayed in the display activity.
-
-NOTES:
-
-    The hardcoded data must not appear in the xml layout; it must be set in the activity. (We will read it from a content provider later) 
-    Be sure to externalize your strings properly - the xml layout should not have any hardcoded strings for display.
-    Be sure to name your projects starting with your prefix - this can be lastname.firstname or your domain name, if you have one, reversed (for example, mine is com.javadude). Use this same prefix for the start of your android package name.
-
-You can create the zip to upload as follows:
-
-    Right-click your project(s) and choose Export...
-    Under "General" choose "Archive File" and press Next
-    Make sure the following options are checked:
-        Save in zip format
-        Compress the contents of the file
-        Create directory structure for files
-    Choose the zip file to create in the To Archive File box.
-    The name of the zip file should be the same as your project name, followed by .zip
-    Press Finish.
-
-Submit your project by 6pm on the day it's due.
+Now you're almost ready to deal with the real data (in the next assignment...)

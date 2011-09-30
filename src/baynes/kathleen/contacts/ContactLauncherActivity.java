@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -40,13 +43,13 @@ public class ContactLauncherActivity extends Activity {
         setContentView(R.layout.contact_list_layout);
         final List<Contact> contacts = new ArrayList<Contact>();
         
-        contacts.add(new Contact("ccotard", "Caden", "Cotard", "111-222-3333", "111-222-3334", "111-222-3335", 
+        contacts.add(new Contact("Caden Cotard", "Caden", "Cotard", "410-867-5309", "111-222-3334", "111-222-3335", 
         		"ccotard@example.com", "", "04/25/1955", "03:00 AM", "08:00 AM"));
-        contacts.add(new Contact("alack", "Adele", "Lack", "111-222-3336", "111-222-3337", "111-222-3338", 
+        contacts.add(new Contact("Adele Lack", "Adele", "Lack", "615-872-4556", "111-222-3337", "111-222-3338", 
         		"alack@example.com", "", "02/12/1966", "05:00 AM", "10:00 AM"));
-        contacts.add(new Contact("ocotard", "Olive", "Cotard", "111-222-3339", "111-222-3340", "111-222-3341", 
+        contacts.add(new Contact("Olive Cotard", "Olive", "Cotard", "410-867-3000", "111-222-3340", "111-222-3341", 
         		"ocotard@example.com", "", "01/24/1997", "05:00 AM", "10:00 AM"));
-        contacts.add(new Contact("ckeen", "Claire", "Keen", "111-222-3342", "111-222-3343", "111-222-3344", 
+        contacts.add(new Contact("Claire Keen", "Claire", "Keen", "443-223-9466", "111-222-3343", "111-222-3344", 
         		"ckeen@example.com", "", "11/01/1977", "05:00 PM", "10:00 PM"));
         
         final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -83,7 +86,9 @@ public class ContactLauncherActivity extends Activity {
 				View view = inflater.inflate(R.layout.contact_entry, null);
 				TextView displayName = (TextView) view.findViewById(R.id.display_name);
 				Contact contact = contacts.get(position);
-				displayName.setText(contact.toString());
+				displayName.setText(contact.getDisplayName());
+				TextView phoneNumber = (TextView) view.findViewById(R.id.home_phone);
+				phoneNumber.setText("(" + contact.getHomePhone() + ")");
 				return view;
         	}
         
@@ -121,9 +126,14 @@ public class ContactLauncherActivity extends Activity {
 			}
         	
         });
+        list.setOnItemClickListener(new OnItemClickListener() {
+			@Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+				Log.d(TAG, contacts.get(position).getDisplayName() + " was clicked");
+				
+			}
+		});
         
-//        setButtonListener(R.id.editContact, "edit");
-//        setButtonListener(R.id.displayContact, "display");
+        
     }
 
 	/**

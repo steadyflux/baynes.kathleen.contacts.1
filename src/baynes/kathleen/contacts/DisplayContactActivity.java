@@ -1,6 +1,9 @@
 package baynes.kathleen.contacts;
 
+import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -11,6 +14,14 @@ import android.widget.TextView;
 **/
 public class DisplayContactActivity extends Activity {
 
+    private static final String CONTACT = "contact";
+	
+    public static Intent createIntent(Context from, Contact contact) {
+		Intent i = new Intent(from, DisplayContactActivity.class);
+		i.putExtra(CONTACT, contact);
+		return i;
+    }
+	
 	/** Draws the screen and sets up the values 
 	 * @param savedInstanceState the saved instance state
 	 */

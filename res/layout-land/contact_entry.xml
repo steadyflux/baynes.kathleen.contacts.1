@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  <ImageView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:paddingTop="5sp"
+    android:src="@android:drawable/sym_contact_card" />
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5sp"
+    android:id="@+id/display_name" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5sp"
+    android:paddingLeft="10sp"
+    android:textSize="10sp"
+    android:id="@+id/home_phone" />
+</LinearLayout>

@@ -81,6 +81,9 @@ public class Contact implements Serializable {
 		this.preferredCallTimeEnd = preferredCallTimeEnd;
 	}
 
+	public Contact() {
+  }
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

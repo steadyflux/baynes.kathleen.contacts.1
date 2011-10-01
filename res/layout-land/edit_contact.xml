@@ -9,31 +9,31 @@
 			<TableRow android:layout_margin="8sp" android:background="#95A18A"
 				android:id="@+id/tableRow1" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/displayNameLabel" />
+				<TextView style="@style/ContactLabel" android:text="@string/display_name_label" />
 				<EditText style="@style/ContactEditText" android:id="@+id/editDisplayNameValue" />
 			</TableRow>
 			<TableRow android:layout_margin="8sp" android:background="#95A18A"
 				android:id="@+id/tableRow2" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/firstNameLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editFirstNameValue" />
+				<TextView style="@style/ContactLabel" android:text="@string/first_name_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_first_name_value" />
 			</TableRow>
 			<TableRow android:layout_margin="8sp" android:background="#95A18A"
 				android:layout_width="wrap_content" android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/lastNameLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editLastNameValue" />
+				<TextView style="@style/ContactLabel" android:text="@string/last_name_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_last_name_value" />
 			</TableRow>
 
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow4" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/birthdateLabel" />
+				<TextView style="@style/ContactLabel" android:text="@string/birthdate_label" />
 				<TableLayout>
 					<TableRow>
-						<TextView style="@style/ContactDisplayText" android:id="@+id/birthdateValue" />
+						<TextView style="@style/ContactDisplayText" android:id="@+id/birthdate_value" />
 					</TableRow>
 					<TableRow>
-						<Button style="@style/ContactDisplayText" android:id="@+id/editBirthdate"
+						<Button style="@style/ContactDisplayText" android:id="@+id/edit_birthdate"
 							android:layout_width="wrap_content" android:layout_height="wrap_content"
 							android:text="Edit Birthday" />
 					</TableRow>
@@ -42,19 +42,19 @@
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow5" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/preferredContactTimeLabel" />
+				<TextView style="@style/ContactLabel" android:text="@string/preferred_contact_time_label" />
 				<TableLayout>
 					<TableRow>
-						<TextView style="@style/ContactDisplayText" android:id="@+id/preferredContactTimeValue" />
+						<TextView style="@style/ContactDisplayText" android:id="@+id/preferred_contact_time_value" />
 					</TableRow>
 					<TableRow>
 						<Button style="@style/ContactDisplayText" 
-							android:id="@+id/editPreferredContactTimeStart"
+							android:id="@+id/edit_preferred_contact_time_start"
 							android:text="Edit Start Time" />
 					</TableRow>
 					<TableRow>
 						<Button style="@style/ContactDisplayText" 
-							android:id="@+id/editPreferredContactTimeEnd"
+							android:id="@+id/edit_preferred_contact_time_end"
 							android:text="Edit End Time" />
 					</TableRow>
 				</TableLayout>
@@ -63,38 +63,38 @@
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow6" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/homePhoneLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editHomePhoneValue"
+				<TextView style="@style/ContactLabel" android:text="@string/home_phone_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_home_phone_value"
 					android:inputType="phone"/>
 			</TableRow>
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow7" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/workPhoneLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editWorkPhoneValue"
+				<TextView style="@style/ContactLabel" android:text="@string/work_phone_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_work_phone_value"
 					android:inputType="phone"/>
 			</TableRow>
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow8" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/mobilePhoneLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editMobilePhoneValue"
+				<TextView style="@style/ContactLabel" android:text="@string/mobile_phone_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_mobile_phone_value"
 					android:inputType="phone"/>
 			</TableRow>
 
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow9" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/emailLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editEmailValue"
+				<TextView style="@style/ContactLabel" android:text="@string/email_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_email_value"
 					android:inputType="textEmailAddress"/>
 			</TableRow>
 
 			<TableRow android:layout_margin="10dp" android:background="#95A18A"
 				android:id="@+id/tableRow10" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView style="@style/ContactLabel" android:text="@string/addressLabel" />
-				<EditText style="@style/ContactEditText" android:id="@+id/editAddressValue"
+				<TextView style="@style/ContactLabel" android:text="@string/address_label" />
+				<EditText style="@style/ContactEditText" android:id="@+id/edit_address_value"
 					android:lines="3"
 					android:gravity="top|left"/>
 			</TableRow>

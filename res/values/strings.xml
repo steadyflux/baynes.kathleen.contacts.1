@@ -4,18 +4,19 @@
     <string name="display_screen">Display Contact</string>
     <string name="edit_screen">Edit Contact</string>
     
-    <string name="displayButton">Display Contact</string>
-    <string name="editButton">Edit Contact</string>
+    <string name="display_button">Display Contact</string>
+    <string name="edit_button">Edit Contact</string>
     
-    <string name="displayNameLabel">Display Name</string>
-    <string name="firstNameLabel">First</string>
-    <string name="lastNameLabel">Last Name</string>
-    <string name="birthdateLabel">Birthday</string>
-    <string name="preferredContactTimeLabel">Best time to Call</string>
-    <string name="homePhoneLabel">Home</string>
-    <string name="workPhoneLabel">Work</string>
-    <string name="mobilePhoneLabel">Mobile</string>
-    <string name="emailLabel">Email</string>
-    <string name="addressLabel">Address</string>
+    <string name="display_name_label">Display Name</string>
+    <string name="first_name_label">First</string>
+    <string name="last_name_label">Last Name</string>
+    <string name="birthdate_label">Birthday</string>
+    <string name="preferred_contact_time_label">Best time to Call</string>
+    <string name="home_phone_label">Home</string>
+    <string name="work_phone_label">Work</string>
+    <string name="mobile_phone_label">Mobile</string>
+    <string name="email_label">Email</string>
+    <string name="address_label">Address</string>
+    <string name="back_to_list_button">Return to List</string>
     
 </resources>

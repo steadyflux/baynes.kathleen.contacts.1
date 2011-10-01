@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author kbaynes
  */
 public class Contact implements Serializable {
-
+	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
@@ -296,12 +296,4 @@ public class Contact implements Serializable {
 		this.preferredCallTimeEnd = preferredCallTimeEnd;
 	}
 
-	/**
-	 * Gets the serialversionuid.
-	 *
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 }

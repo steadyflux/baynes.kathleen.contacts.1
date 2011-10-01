@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,11 +18,12 @@ import android.widget.TextView;
  **/
 public class DisplayContactActivity extends Activity {
 
-	private static final String CONTACT = "contact";
-
+	protected static final String TAG = "baynes.kathleen.contacts.ContactLauncherActivity";
+	protected static final int EDIT_RESULT = 17;
+	
 	public static Intent createIntent(Context from, Contact contact) {
 		Intent i = new Intent(from, DisplayContactActivity.class);
-		i.putExtra(CONTACT, contact);
+		i.putExtra(ContactLauncherActivity.CONTACT, contact);
 		return i;
 	}
 
@@ -41,7 +43,7 @@ public class DisplayContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display_contact);
 
-		Contact contact = (Contact) getIntent().getExtras().getSerializable(CONTACT);
+		final Contact contact = (Contact) getIntent().getExtras().getSerializable(ContactLauncherActivity.CONTACT);
 		((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
 		((TextView) findViewById(R.id.first_name_value)).setText(contact.getFirstName());
 		((TextView) findViewById(R.id.last_name_value)).setText(contact.getLastName());
@@ -54,17 +56,18 @@ public class DisplayContactActivity extends Activity {
 		((TextView) findViewById(R.id.email_value)).setText(contact.getEmail());
 		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
 
-		Button editButton = (Button) findViewById(R.id.back_to_list_button);
-		editButton.setOnClickListener(new OnClickListener() {
+		Button backToListButton = (Button) findViewById(R.id.back_to_list_button);
+		Button editButton = (Button) findViewById(R.id.edit_button);
+		
+		backToListButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Contact contact = new Contact();
 				contact.setDisplayName(((TextView) findViewById(R.id.display_name_value)).getText().toString());
 				contact.setFirstName(((TextView) findViewById(R.id.first_name_value)).getText().toString());
 				contact.setLastName(((TextView) findViewById(R.id.last_name_value)).getText().toString());
 				contact.setBirthday(((TextView) findViewById(R.id.birthdate_value)).getText().toString());
-//				contact.setDisplayName(((TextView) findViewById(R.id.preferred_contact_time_value)).setText(contact.getPreferredCallTimeStart() + " - "
-//				    + contact.getPreferredCallTimeEnd());
+				contact.setPreferredCallTimeStart(((TextView) findViewById(R.id.preferred_contact_time_value)).toString());
+				contact.setPreferredCallTimeEnd(((TextView) findViewById(R.id.preferred_contact_time_value)).toString());
 				contact.setHomePhone(((TextView) findViewById(R.id.home_phone_value)).getText().toString());
 				contact.setWorkPhone(((TextView) findViewById(R.id.work_phone_value)).getText().toString());
 				contact.setMobilePhone(((TextView) findViewById(R.id.mobile_phone_value)).getText().toString());
@@ -74,6 +77,14 @@ public class DisplayContactActivity extends Activity {
 				finish();
 			}
 		});
-
+		
+		editButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d(TAG, contact.getDisplayName() + " was clicked");
+				Intent editIntent = EditContactActivity.createIntent(DisplayContactActivity.this, contact);
+				startActivityForResult(editIntent, EDIT_RESULT);
+			}
+		});
 	}
 }

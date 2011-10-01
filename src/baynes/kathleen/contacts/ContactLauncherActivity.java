@@ -32,6 +32,8 @@ public class ContactLauncherActivity extends Activity {
 	protected static final String TAG = "baynes.kathleen.contacts.ContactLauncherActivity";
 	protected static final int DISPLAY_RESULT = 16;
 
+	public static final String CONTACT = "contact";
+
 	/**
 	 * Called when the activity is first created.
 	 * 
@@ -131,8 +133,8 @@ public class ContactLauncherActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 				Log.d(TAG, contacts.get(position).getDisplayName() + " was clicked");
-				Intent i = DisplayContactActivity.createIntent(ContactLauncherActivity.this, contacts.get(position));
-				startActivityForResult(i, DISPLAY_RESULT);
+				Intent displayIntent = DisplayContactActivity.createIntent(ContactLauncherActivity.this, contacts.get(position));
+				startActivityForResult(displayIntent, DISPLAY_RESULT);
 			}
 		});
 

@@ -12,18 +12,33 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * This Activity displays static (at the moment) data related to a contact.
+ * This Activity displays static data related to a contact. Also links to the
+ * EditContactActivity and returns to ContactLauncherActivity
  * 
  * @author <A HREF="mailto:ktbaynes@gmail.com">Kathleen Baynes</A>
  **/
 public class DisplayContactActivity extends Activity {
 
+	/** The Constant TAG. */
 	protected static final String TAG = "baynes.kathleen.contacts.DisplayContactActivity";
+	
+	/** The Constant EDIT_RESULT. */
 	protected static final int EDIT_RESULT = 17;
 
+	/** The contact. */
 	private Contact contact;
+	
+	/** The list position. */
 	private int listPosition = -1;
 
+	/**
+	 * Creates the intent.
+	 *
+	 * @param from the from
+	 * @param contact the contact
+	 * @param position the position
+	 * @return the intent
+	 */
 	public static Intent createIntent(Context from, Contact contact, int position) {
 		Intent i = new Intent(from, DisplayContactActivity.class);
 		i.putExtra(ContactLauncherActivity.CONTACT, contact);
@@ -32,14 +47,9 @@ public class DisplayContactActivity extends Activity {
 	}
 
 	/**
-	 * Draws the screen and sets up the values
-	 * 
-	 * @param savedInstanceState
-	 *          the saved instance state
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
+	 * Draws the screen and sets up the values.
+	 *
+	 * @param savedInstanceState the saved instance state
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -58,6 +68,12 @@ public class DisplayContactActivity extends Activity {
 		Button editButton = (Button) findViewById(R.id.edit_button);
 
 		backToListButton.setOnClickListener(new OnClickListener() {
+
+			/*
+			 * sends updated contact to the ContactLauncherActivity
+			 * 
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
 			@Override
 			public void onClick(View v) {
 				contact.setDisplayName(((TextView) findViewById(R.id.display_name_value)).getText().toString());
@@ -85,6 +101,11 @@ public class DisplayContactActivity extends Activity {
 		});
 
 		editButton.setOnClickListener(new OnClickListener() {
+			/*
+			 * sends updated contact to the EditContactActivity
+			 * 
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, contact.getDisplayName() + " was clicked");
@@ -94,6 +115,10 @@ public class DisplayContactActivity extends Activity {
 		});
 	}
 
+	
+	/**
+	 * Populates contact data into the layout.
+	 */
 	private void populateContactData() {
 		((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
 		((TextView) findViewById(R.id.first_name_value)).setText(contact.getFirstName());
@@ -108,6 +133,10 @@ public class DisplayContactActivity extends Activity {
 		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
 	}
 
+	/* 
+	 * updates the layout based on updates from the edit screen
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {

@@ -6,7 +6,7 @@ package baynes.kathleen.contacts.models;
 import java.io.Serializable;
 
 /**
- * The Class Contact.
+ * The Class Contact used by other activities
  *
  * @author kbaynes
  */
@@ -49,19 +49,19 @@ public class Contact implements Serializable {
 	private String preferredCallTimeEnd;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param displayName
-	 * @param firstName
-	 * @param lastName
-	 * @param homePhone
-	 * @param workPhone
-	 * @param mobilePhone
-	 * @param email
-	 * @param address
-	 * @param birthday
-	 * @param preferredCallTimeStart
-	 * @param preferredCallTimeEnd
+	 * Constructor.
+	 *
+	 * @param displayName the display name
+	 * @param firstName the first name
+	 * @param lastName the last name
+	 * @param homePhone the home phone
+	 * @param workPhone the work phone
+	 * @param mobilePhone the mobile phone
+	 * @param email the email
+	 * @param address the address
+	 * @param birthday the birthday
+	 * @param preferredCallTimeStart the preferred call time start
+	 * @param preferredCallTimeEnd the preferred call time end
 	 */
 	public Contact(String displayName, String firstName, String lastName,
 			String homePhone, String workPhone, String mobilePhone,
@@ -81,6 +81,9 @@ public class Contact implements Serializable {
 		this.preferredCallTimeEnd = preferredCallTimeEnd;
 	}
 
+	/**
+	 * Instantiates a new contact.
+	 */
 	public Contact() {
   }
 
@@ -298,10 +301,22 @@ public class Contact implements Serializable {
 
 	
 
+	/**
+	 * Parses the preferred start time from string of format: HH:mm AM|PM - HH:mm AM|PM
+	 * 
+	 * @param preferredContactTimeString the preferred contact time string
+	 * @return the string
+	 */
 	public static String parsePreferredStartTimeFromString(String preferredContactTimeString) {
 		return preferredContactTimeString.substring(0, 8).trim();
   }
 	
+	/**
+	 * Parses the preferred end time from string of format: HH:mm AM|PM - HH:mm AM|PM
+	 *
+	 * @param preferredContactTimeString the preferred contact time string
+	 * @return the string
+	 */
 	public static String parsePreferredEndTimeFromString(String preferredContactTimeString) {
 		return preferredContactTimeString.substring(10).trim();
   }

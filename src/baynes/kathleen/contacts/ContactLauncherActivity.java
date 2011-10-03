@@ -21,30 +21,54 @@ import android.widget.TextView;
 
 /**
  * This is the main Activity to be launched upon starting this application. It
- * includes buttons linking to both the DisplayContactActivity and the
+ * displays a statically generated list of contacts
  * EditContactActivity
  * 
  * @author <A HREF="mailto:ktbaynes@gmail.com">Kathleen Baynes</A>
  **/
 public class ContactLauncherActivity extends Activity {
-	/** Based off in-class example */
+	
+	/** Based off in-class example. */
 	protected static final String TAG = "baynes.kathleen.contacts.ContactLauncherActivity";
+	
+	/** The Constant DISPLAY_RESULT. */
 	protected static final int DISPLAY_RESULT = 16;
 
+	/** The Constant CONTACT, used for populating extras */
 	public static final String CONTACT = "contact";
+	
+	/** The Constant LIST_POSITION, used for populating extras; included to help determine which contact to change upon return from the display*/
 	public static final String LIST_POSITION = "listPosition";
 	
+	/** The contacts. */
 	private ArrayList<Contact> contacts = new ArrayList<Contact>();
+	
+	/** The contact list adapter. */
 	private ContactListAdapter contactListAdapter = null;
+	
+	/** The inflater. */
 	private LayoutInflater inflater;
 	
+	/**
+	 * This class handles display of the contacts and populated the rows of the ListView.
+	 */
 	private final class ContactListAdapter extends ArrayAdapter<Contact> {
 
+		/**
+		 * Instantiates a new contact list adapter.
+		 *
+		 * @param context the context
+		 * @param textViewResourceId the text view resource id
+		 * @param contacts the contacts
+		 */
 		public ContactListAdapter(Context context, int textViewResourceId, List<Contact> contacts) {
 	    super(context, textViewResourceId, contacts);
     }
 
-	  @Override
+	  /* Populated the contact view
+  	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+  	 */
+  	@Override
 	  public View getView(int position, View availableView, ViewGroup group) {
 	  	
 	  	View row;
@@ -102,6 +126,9 @@ public class ContactLauncherActivity extends Activity {
 
 	}
 
+	/* Handles returned contacts and refreshes the contact list with updated (if any) data
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {

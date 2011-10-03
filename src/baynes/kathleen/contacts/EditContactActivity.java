@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * This Activity displays static (at the moment) data related to a contact and
- * enables editing (but not saving) of the contents of each field.
+ * This Activity displays data related to a contact and
+ * enables editing (or canceling) of the contents of each field.
  * 
  * Borrows heavily from:
  * http://developer.android.com/resources/tutorials/views/hello-timepicker.html
@@ -160,6 +160,10 @@ public class EditContactActivity extends Activity {
 		Button cancelButton = (Button) findViewById(R.id.cancel_button);
 
 		saveButton.setOnClickListener(new OnClickListener() {
+			
+			/* (non-Javadoc)
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
 			@Override
 			public void onClick(View v) {
 

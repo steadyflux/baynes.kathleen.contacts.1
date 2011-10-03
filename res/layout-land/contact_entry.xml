@@ -9,12 +9,14 @@
     android:paddingTop="5sp"
     android:src="@android:drawable/sym_contact_card" />
   <TextView
+    android:textColor="#283031"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="5sp"
     android:id="@+id/display_name" />
 
   <TextView
+    android:textColor="#283031"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="5sp"

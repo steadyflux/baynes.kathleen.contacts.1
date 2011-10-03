@@ -296,4 +296,13 @@ public class Contact implements Serializable {
 		this.preferredCallTimeEnd = preferredCallTimeEnd;
 	}
 
+	
+
+	public static String parsePreferredStartTimeFromString(String preferredContactTimeString) {
+		return preferredContactTimeString.substring(0, 8).trim();
+  }
+	
+	public static String parsePreferredEndTimeFromString(String preferredContactTimeString) {
+		return preferredContactTimeString.substring(10).trim();
+  }
 }

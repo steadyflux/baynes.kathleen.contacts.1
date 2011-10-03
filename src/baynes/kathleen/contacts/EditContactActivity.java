@@ -1,5 +1,10 @@
 package baynes.kathleen.contacts;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -28,7 +33,7 @@ import android.widget.TimePicker;
 public class EditContactActivity extends Activity {
 
 	protected static final String TAG = "baynes.kathleen.contacts.EditContactActivity";
-	
+
 	public static Intent createIntent(Context from, Contact contact) {
 		Intent i = new Intent(from, EditContactActivity.class);
 		i.putExtra(ContactLauncherActivity.CONTACT, contact);
@@ -123,14 +128,12 @@ public class EditContactActivity extends Activity {
 		((TextView) findViewById(R.id.edit_display_name_value)).setText(contact.getDisplayName());
 		((TextView) findViewById(R.id.edit_first_name_value)).setText(contact.getFirstName());
 		((TextView) findViewById(R.id.edit_last_name_value)).setText(contact.getLastName());
-		((TextView) findViewById(R.id.edit_birthdate)).setText(contact.getBirthday());
-
+		((TextView) findViewById(R.id.birthdate_value)).setText(contact.getBirthday());
 		((TextView) findViewById(R.id.edit_home_phone_value)).setText(contact.getHomePhone());
 		((TextView) findViewById(R.id.edit_work_phone_value)).setText(contact.getWorkPhone());
 		((TextView) findViewById(R.id.edit_mobile_phone_value)).setText(contact.getMobilePhone());
 		((TextView) findViewById(R.id.edit_email_value)).setText(contact.getEmail());
 		((TextView) findViewById(R.id.edit_address_value)).setText(contact.getAddress(), TextView.BufferType.EDITABLE);
-		// unpack the bundled extras and set the fields
 
 		Button pickBirthdate = (Button) findViewById(R.id.edit_birthdate);
 		Button pickStartTime = (Button) findViewById(R.id.edit_preferred_contact_time_start);
@@ -159,26 +162,29 @@ public class EditContactActivity extends Activity {
 		saveButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				Log.e(TAG, "on the click listener: " + ((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
-				
+
+				Log.e(TAG, "on the click listener: "
+				    + ((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
+
 				contact.setDisplayName(((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
 				contact.setFirstName(((TextView) findViewById(R.id.edit_first_name_value)).getText().toString());
 				contact.setLastName(((TextView) findViewById(R.id.edit_last_name_value)).getText().toString());
 				contact.setBirthday(((TextView) findViewById(R.id.birthdate_value)).getText().toString());
-				// contact.setPreferredCallTimeStart(((TextView)
-				// findViewById(R.id.edit_preferred_contact_time_value)).toString());
-				// contact.setPreferredCallTimeEnd(((TextView)
-				// findViewById(R.id.edit_preferred_contact_time_value)).toString());
+				contact.setPreferredCallTimeStart(Contact
+				    .parsePreferredStartTimeFromString(((TextView) findViewById(R.id.preferred_contact_time_value)).getText()
+				        .toString()));
+				contact.setPreferredCallTimeEnd(Contact
+				    .parsePreferredEndTimeFromString(((TextView) findViewById(R.id.preferred_contact_time_value)).getText()
+				        .toString()));
 				contact.setHomePhone(((TextView) findViewById(R.id.edit_home_phone_value)).getText().toString());
 				contact.setWorkPhone(((TextView) findViewById(R.id.edit_work_phone_value)).getText().toString());
 				contact.setMobilePhone(((TextView) findViewById(R.id.edit_mobile_phone_value)).getText().toString());
 				contact.setEmail(((TextView) findViewById(R.id.edit_email_value)).getText().toString());
 				contact.setAddress(((TextView) findViewById(R.id.edit_address_value)).getText().toString());
 				getIntent().putExtra(ContactLauncherActivity.CONTACT, contact);
-				
+
 				Log.e(TAG, "post set getDisplayName: " + contact.getDisplayName());
-				
+
 				setResult(RESULT_OK, getIntent());
 				finish();
 			}
@@ -192,15 +198,36 @@ public class EditContactActivity extends Activity {
 			}
 		});
 
-		// dummmy initialization.
-		mStartHour = 18;
-		mStartMinute = 0;
-		mEndHour = 21;
-		mEndMinute = 0;
-		mYear = 2011;
-		mDayOfMonth = 28;
-		mMonth = 2;
-
+		
+		DateFormat formatter;
+		Date date;
+		
+		formatter = new SimpleDateFormat("hh:mm aa");
+		try {
+			date = (Date) formatter.parse(contact.getPreferredCallTimeStart());
+			mStartHour = date.getHours();
+			mStartMinute = date.getMinutes();
+			date = (Date) formatter.parse(contact.getPreferredCallTimeEnd());
+			mEndHour = date.getHours();
+			mEndMinute = date.getMinutes();			
+		} catch (ParseException e) {
+    	Log.e(TAG, "Error parsing preferred contact times.", e);
+    	//FIXME: need a better way for dealing with errors
+    	finish();
+    }
+		
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		try {
+	    date = (Date) formatter.parse(contact.getBirthday());
+	    mYear = date.getYear() + 1900;
+			mDayOfMonth = date.getDate();
+			mMonth = date.getMonth();
+    } catch (ParseException e) {
+    	Log.e(TAG, "Error parsing birthday", e);
+    	//FIXME: need a better way for dealing with errors
+    	finish();
+    }
+		
 		// set initial values based on initialized fields
 		updateBirthdate();
 		updatePreferredTimeDisplay();
@@ -217,6 +244,7 @@ public class EditContactActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case BIRTHDAY_DIALOG_ID:
+			Log.d(TAG, "month: " + mMonth + "    ------ day: " + mDayOfMonth + "    ------- year: " + mYear);
 			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDayOfMonth);
 		case START_TIME_DIALOG_ID:
 			return new TimePickerDialog(this, mStartTimeSetListener, mStartHour, mStartMinute, false);
@@ -227,7 +255,7 @@ public class EditContactActivity extends Activity {
 	}
 
 	/**
-	 * Update preferred time display TextView. Format: HH:MM AM|PM - HH:MM AM|PM
+	 * Update preferred time display TextView. Format: HH:mm AM|PM - HH:mm AM|PM
 	 */
 	private void updatePreferredTimeDisplay() {
 		((TextView) findViewById(R.id.preferred_contact_time_value)).setText(new StringBuilder().append(mStartHour % 12)
@@ -255,8 +283,7 @@ public class EditContactActivity extends Activity {
 	 * Update birthday TextView using set fields.
 	 */
 	protected void updateBirthdate() {
-		((TextView) findViewById(R.id.birthdate_value)).setText(new StringBuilder().append(pad(mMonth + 1)) // zero
-																																																				// indexing
-		    .append("\\").append(pad(mDayOfMonth)).append("\\").append(mYear));
+		((TextView) findViewById(R.id.birthdate_value)).setText(new StringBuilder().append(pad(mMonth + 1))
+		    .append("/").append(pad(mDayOfMonth)).append("/").append(mYear));
 	}
 }

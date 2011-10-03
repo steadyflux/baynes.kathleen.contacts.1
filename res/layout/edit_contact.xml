@@ -19,7 +19,7 @@
         <TableLayout
           android:layout_height="wrap_content"
           android:layout_width="match_parent"
-          android:background="#3A1E20">
+          android:background="#234C59">
           <TableRow
             android:layout_margin="8sp"
             android:background="#95A18A"

@@ -18,12 +18,16 @@ import android.widget.TextView;
  **/
 public class DisplayContactActivity extends Activity {
 
-	protected static final String TAG = "baynes.kathleen.contacts.ContactLauncherActivity";
+	protected static final String TAG = "baynes.kathleen.contacts.DisplayContactActivity";
 	protected static final int EDIT_RESULT = 17;
 	
-	public static Intent createIntent(Context from, Contact contact) {
+	private Contact contact;
+	private int listPosition = -1;
+	
+	public static Intent createIntent(Context from, Contact contact, int position) {
 		Intent i = new Intent(from, DisplayContactActivity.class);
 		i.putExtra(ContactLauncherActivity.CONTACT, contact);
+		i.putExtra(ContactLauncherActivity.LIST_POSITION, position);
 		return i;
 	}
 
@@ -43,18 +47,12 @@ public class DisplayContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display_contact);
 
-		final Contact contact = (Contact) getIntent().getExtras().getSerializable(ContactLauncherActivity.CONTACT);
-		((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
-		((TextView) findViewById(R.id.first_name_value)).setText(contact.getFirstName());
-		((TextView) findViewById(R.id.last_name_value)).setText(contact.getLastName());
-		((TextView) findViewById(R.id.birthdate_value)).setText(contact.getBirthday());
-		((TextView) findViewById(R.id.preferred_contact_time_value)).setText(contact.getPreferredCallTimeStart() + " - "
-		    + contact.getPreferredCallTimeEnd());
-		((TextView) findViewById(R.id.home_phone_value)).setText(contact.getHomePhone());
-		((TextView) findViewById(R.id.work_phone_value)).setText(contact.getWorkPhone());
-		((TextView) findViewById(R.id.mobile_phone_value)).setText(contact.getMobilePhone());
-		((TextView) findViewById(R.id.email_value)).setText(contact.getEmail());
-		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
+		//if the position from the original list has been set, don't set it again
+		if (listPosition == -1) {
+			listPosition =  getIntent().getExtras().getInt(ContactLauncherActivity.LIST_POSITION);
+		}
+		contact = (Contact) getIntent().getExtras().getSerializable(ContactLauncherActivity.CONTACT);
+		populateContactData();
 
 		Button backToListButton = (Button) findViewById(R.id.back_to_list_button);
 		Button editButton = (Button) findViewById(R.id.edit_button);
@@ -72,7 +70,9 @@ public class DisplayContactActivity extends Activity {
 				contact.setWorkPhone(((TextView) findViewById(R.id.work_phone_value)).getText().toString());
 				contact.setMobilePhone(((TextView) findViewById(R.id.mobile_phone_value)).getText().toString());
 				contact.setEmail(((TextView) findViewById(R.id.email_value)).getText().toString());
-				contact.setAddress(((TextView) findViewById(R.id.address_value)).getText().toString());				
+				contact.setAddress(((TextView) findViewById(R.id.address_value)).getText().toString());			
+				getIntent().putExtra(ContactLauncherActivity.CONTACT, contact);
+				getIntent().putExtra(ContactLauncherActivity.LIST_POSITION, listPosition);
 				setResult(RESULT_OK, getIntent());
 				finish();
 			}
@@ -86,5 +86,35 @@ public class DisplayContactActivity extends Activity {
 				startActivityForResult(editIntent, EDIT_RESULT);
 			}
 		});
+	}
+
+	private void populateContactData() {
+	  ((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
+		((TextView) findViewById(R.id.first_name_value)).setText(contact.getFirstName());
+		((TextView) findViewById(R.id.last_name_value)).setText(contact.getLastName());
+		((TextView) findViewById(R.id.birthdate_value)).setText(contact.getBirthday());
+		((TextView) findViewById(R.id.preferred_contact_time_value)).setText(contact.getPreferredCallTimeStart() + " - "
+		    + contact.getPreferredCallTimeEnd());
+		((TextView) findViewById(R.id.home_phone_value)).setText(contact.getHomePhone());
+		((TextView) findViewById(R.id.work_phone_value)).setText(contact.getWorkPhone());
+		((TextView) findViewById(R.id.mobile_phone_value)).setText(contact.getMobilePhone());
+		((TextView) findViewById(R.id.email_value)).setText(contact.getEmail());
+		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
+  }
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case EDIT_RESULT:
+			if (resultCode == RESULT_OK) {
+				
+				//extract the contact from the incoming data
+				contact = (Contact) data.getExtras().getSerializable(ContactLauncherActivity.CONTACT);
+				Log.e(TAG, "edited data: " + contact.getDisplayName());
+				populateContactData();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

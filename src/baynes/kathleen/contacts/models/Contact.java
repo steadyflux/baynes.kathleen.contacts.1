@@ -6,7 +6,7 @@ package baynes.kathleen.contacts.models;
 import java.io.Serializable;
 
 /**
- * The Class Contact used by other activities
+ * The Class Contact used by other activities.
  *
  * @author kbaynes
  */
@@ -14,6 +14,9 @@ public class Contact implements Serializable {
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The id for the contact. */
+	private long id;
 	
 	/** The display name. */
 	private String displayName;
@@ -302,8 +305,8 @@ public class Contact implements Serializable {
 	
 
 	/**
-	 * Parses the preferred start time from string of format: HH:mm AM|PM - HH:mm AM|PM
-	 * 
+	 * Parses the preferred start time from string of format: HH:mm AM|PM - HH:mm AM|PM.
+	 *
 	 * @param preferredContactTimeString the preferred contact time string
 	 * @return the string
 	 */
@@ -312,12 +315,30 @@ public class Contact implements Serializable {
   }
 	
 	/**
-	 * Parses the preferred end time from string of format: HH:mm AM|PM - HH:mm AM|PM
+	 * Parses the preferred end time from string of format: HH:mm AM|PM - HH:mm AM|PM.
 	 *
 	 * @param preferredContactTimeString the preferred contact time string
 	 * @return the string
 	 */
 	public static String parsePreferredEndTimeFromString(String preferredContactTimeString) {
 		return preferredContactTimeString.substring(10).trim();
+  }
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public long getId() {
+	  return id;
+  }
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(long id) {
+	  this.id = id;
   }
 }

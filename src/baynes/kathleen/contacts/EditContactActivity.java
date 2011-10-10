@@ -113,7 +113,7 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
-	private ContactsApplication application;
+	private ContactsDB contactsDB;
 
 	/** Draws the screen and sets up the values */
 	/*
@@ -126,14 +126,13 @@ public class EditContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_contact);
 		
-		application = (ContactsApplication) this.getApplication();
-		application.setContactDB(new ContactsDB(this));
+		contactsDB = new ContactsDB(this);
 		
 		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
 		
 		Log.d(TAG, "Contact id: " + contact_id);
 		
-		final Contact contact =  (contact_id == -1) ? new Contact() : application.getContactDB().retrieveContact(contact_id);
+		final Contact contact =  (contact_id == -1) ? new Contact() : contactsDB.retrieveContact(contact_id);
 		
 		if (!contact.isNew()) {
 			// unpack the bundled extras and set the fields
@@ -199,7 +198,7 @@ public class EditContactActivity extends Activity {
 				contact.setAddress(((TextView) findViewById(R.id.edit_address_value)).getText().toString());
 				
 				if (contact.isNew()) {
-					contact.setId(application.getContactDB().insert(contact));
+					contact.setId(contactsDB.insert(contact));
 				}
 				
 				getIntent().putExtra(ContactLauncherActivity.CONTACT_ID, contact.getId());
@@ -319,5 +318,12 @@ public class EditContactActivity extends Activity {
 	protected void updateBirthdate() {
 		((TextView) findViewById(R.id.birthdate_value)).setText(new StringBuilder().append(pad(mMonth + 1))
 		    .append("/").append(pad(mDayOfMonth)).append("/").append(mYear));
+	}
+	
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		contactsDB.close();
 	}
 }

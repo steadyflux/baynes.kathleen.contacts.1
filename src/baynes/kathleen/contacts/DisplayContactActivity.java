@@ -28,8 +28,8 @@ public class DisplayContactActivity extends Activity {
 
 	/** The contact. */
 	private Contact contact;
-	
-	private ContactsApplication application;
+
+	private ContactsDB contactsDB;
 
 	/**
 	 * Creates the intent.
@@ -54,15 +54,13 @@ public class DisplayContactActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		application = (ContactsApplication) this.getApplication();
-		application.setContactDB(new ContactsDB(this));
-		
 		setContentView(R.layout.display_contact);
-
+		
+		contactsDB = new ContactsDB(this);
+		
 		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
 		
-		contact = application.getContactDB().retrieveContact(contact_id);
+		contact = contactsDB.retrieveContact(contact_id);
 		populateContactData();
 
 		Button backToListButton = (Button) findViewById(R.id.back_to_list_button);
@@ -145,11 +143,17 @@ public class DisplayContactActivity extends Activity {
 
 				// extract the contact from the incoming data
 				long contact_id = data.getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
-				contact = application.getContactDB().retrieveContact(contact_id);
+				contact = contactsDB.retrieveContact(contact_id);
 				Log.e(TAG, "edited data: " + contact.getDisplayName());
 				populateContactData();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		contactsDB.close();
 	}
 }

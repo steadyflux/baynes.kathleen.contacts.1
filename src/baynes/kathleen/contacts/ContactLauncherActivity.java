@@ -1,10 +1,6 @@
 package baynes.kathleen.contacts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import baynes.kathleen.contacts.db.ContactsDB;
-import baynes.kathleen.contacts.models.Contact;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,17 +8,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 /**
  * This is the main Activity to be launched upon starting this application. It
@@ -47,10 +39,7 @@ public class ContactLauncherActivity extends Activity {
 	/** The contact list adapter. */
 	private ContactListAdapter contactListAdapter = null;
 
-	/** The inflater. */
-	private LayoutInflater inflater;
-
-	private static ContactsApplication application = null;
+  private ContactsDB contactsDB;
 	
 	/**
 	 * This class handles display of the contacts and populated the rows of the
@@ -90,14 +79,10 @@ public class ContactLauncherActivity extends Activity {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		application = (ContactsApplication) this.getApplication();
-		application.setContactDB(new ContactsDB(this));
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list_layout);
 
-		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+		contactsDB = new ContactsDB(this);
 		populateList();
 
 		Button createContactButton = (Button) findViewById(R.id.create_contact_button);
@@ -122,7 +107,7 @@ public class ContactLauncherActivity extends Activity {
 	private void populateList() {
 	  ListView list = (ListView) findViewById(R.id.contact_list);
 
-		contactListAdapter = new ContactListAdapter(this, R.layout.contact_entry, application.getContactDB().getAllCursor(), new String[] {
+		contactListAdapter = new ContactListAdapter(this, R.layout.contact_entry, contactsDB.getAllCursor(), new String[] {
 		    ContactsDB.DISPLAY_NAME, ContactsDB.HOME_PHONE }, new int[] { R.id.display_name_value, R.id.home_phone_value });
 
 		list.setAdapter(contactListAdapter);
@@ -155,4 +140,9 @@ public class ContactLauncherActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		contactsDB.close();
+	}
 }

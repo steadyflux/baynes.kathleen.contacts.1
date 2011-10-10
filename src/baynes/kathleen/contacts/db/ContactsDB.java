@@ -86,6 +86,7 @@ public class ContactsDB {
 		ContactsDBHelper helper = new ContactsDBHelper(context);
 		db = helper.getWritableDatabase();
 		insertStatement = db.compileStatement(INSERT_CONTACT_TABLE_SQL);
+		
 	}
 
 	public void close() {
@@ -155,7 +156,7 @@ public class ContactsDB {
 	}
 
 	public boolean deleteContact(long id) {
-		return true;
+		throw new UnsupportedOperationException("Not yet implemented");
 	}
 	
 	public Cursor getAllCursor() {

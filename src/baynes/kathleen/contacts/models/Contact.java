@@ -341,4 +341,8 @@ public class Contact implements Serializable {
 	public void setId(long id) {
 	  this.id = id;
   }
+
+	public boolean isNew() {
+	  return (this.id == 0L);
+  }
 }

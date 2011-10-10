@@ -1,31 +1,16 @@
-Assignment - In progress
+Almost done with the contacts application... (one more after this)
 
-Complete the form, then choose the appropriate button at the bottom.
-Title 	HW3: Lists of Contacts
-Due 	Oct 3, 2011 6:00 pm
-Status 	Not Started
-Grade Scale 	Points (max 4.0)
-Modified by instructor 	Sep 27, 2011 1:34 pm
-Instructions
- In this assignment, you'll add a ListView to your contacts application. (you can extend ListActivity if you'd like, which shortens the setup a wee bit - I didn't use it in class because I wanted to be more explicit about what's going on).
+Now we'll add data persistence using a SQLite database.
 
-Do the following
+Your application should behave as follows:
 
-    Create a new activity that creates a list of dummy contacts and displays them in a ListView. Feel free to use a single TextView to represent entries in the list, and you can use toString() in your contact objects to get the display value. (Note that in a real app I would not recommend using toString() for anything other that debugging/logging).
+1.    Make sure your contact class has an id.
+2.    All database access should be managed via a helper class (I call it ContactsDB). Implement this in a similar manner to the example I showed in class. This class will have methods like getAllContacts(), getContact(id), insertContact(Contact) and updateContact(Contact). This class should manage all database access. You'll need to create a new instance of this class in each activity that performs database access. Be sure to have a close() method that can be called from your activity's onPause() so you can close the underlying database connection, or android will complain.
+3.    When creating your database, be sure to add a field called _id as described in class (integer primary key autoincrement)
+4.    The list activity should read all contacts from the database and display them in the list. You will no longer be using hardcoded contacts.
+5.    On the list activity, add a "Create" menu item. Pressing this should start your edit activity. Pass a flag in your intent to indicate that you're creating a new contact, and -1 for the id of the contact being created. (You won't use the id when creating a new contact). Do not pass the contact data.
+6.    On the display activity, when starting the edit activity, pass a flag to indicate that you're updating an existing entry, and the id of the contact being edited. Do not pass the contact data.
+7.    On the edit activity, read the contact from the database (based on the id that was passed in). When the save button is pressed, either insert a new contact (if creating a contact) or update an existing contact. Do not return the contact to the caller.
+8.    In activities that need to update information, re-read the contact or contact list. I recommend moving your view-updating code to onStart().
+9.    You can use SimpleCursorAdapter to manage your list entries based on a database cursor if you would like. If you do, your getAllContacts() method in your ContactsDB class will need to return a cursor. If you don't use this, your getAllContacts() should return a list of populated contacts objects.
 
-    If you would like to try it, you can create a more complex entry view that displays the contact name and maybe a phone number. Not required, and no penalty if you do not do this, but could be interesting to try if you have the time.
-    When a contact in the list is clicked, start your "display contact" activity. Use startActivityForResult() and set up the appropriate callback to receive the result. Pass the contact in the "extras" for the intent.
-
-    (Note that the contact will need to be serializable; you can experiment with parcelable if you'd like - see http://shri.blog.kraya.co.uk/2010/04/26/android-parcel-data-to-pass-between-activities-using-parcelable-classes/ for a good example, but it's a bit of extra work. Apparently it's much faster than using serializable on Android)
-    Change your "display contact" activity to read the contact to be displayed from the Intent and display it
-
-     
-    Add a menu item to "display contact" named "Edit" - when clicked, send that contact to your "edit contact" activity (again via startActivityForResult)
-
-     
-    Modify your "edit contact" activity to read the contact from the Intent and edit it. Add "save" and "revert" buttons to this activity. "Save" should send the modified contact back (and finish()); "Revert" should just return RESULT_CANCELED.
-
-     
-    Update the contact  as you progress back through the display and list views
-
-Now you're almost ready to deal with the real data (in the next assignment...)

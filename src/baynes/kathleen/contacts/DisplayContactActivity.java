@@ -1,5 +1,6 @@
 package baynes.kathleen.contacts;
 
+import baynes.kathleen.contacts.db.ContactsDB;
 import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
 import android.content.Context;
@@ -28,8 +29,7 @@ public class DisplayContactActivity extends Activity {
 	/** The contact. */
 	private Contact contact;
 	
-	/** The list position. */
-	private int listPosition = -1;
+	private ContactsApplication application;
 
 	/**
 	 * Creates the intent.
@@ -39,10 +39,9 @@ public class DisplayContactActivity extends Activity {
 	 * @param position the position
 	 * @return the intent
 	 */
-	public static Intent createIntent(Context from, Contact contact, int position) {
+	public static Intent createIntent(Context from, long id) {
 		Intent i = new Intent(from, DisplayContactActivity.class);
-		i.putExtra(ContactLauncherActivity.CONTACT, contact);
-		i.putExtra(ContactLauncherActivity.LIST_POSITION, position);
+		i.putExtra(ContactLauncherActivity.CONTACT_ID, id);
 		return i;
 	}
 
@@ -55,13 +54,15 @@ public class DisplayContactActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		application = (ContactsApplication) this.getApplication();
+		application.setContactDB(new ContactsDB(this));
+		
 		setContentView(R.layout.display_contact);
 
-		// if the position from the original list has been set, don't set it again
-		if (listPosition == -1) {
-			listPosition = getIntent().getExtras().getInt(ContactLauncherActivity.LIST_POSITION);
-		}
-		contact = (Contact) getIntent().getExtras().getSerializable(ContactLauncherActivity.CONTACT);
+		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
+		
+		contact = application.getContactDB().retrieveContact(contact_id);
 		populateContactData();
 
 		Button backToListButton = (Button) findViewById(R.id.back_to_list_button);
@@ -93,8 +94,7 @@ public class DisplayContactActivity extends Activity {
 				contact.setMobilePhone(((TextView) findViewById(R.id.mobile_phone_value)).getText().toString());
 				contact.setEmail(((TextView) findViewById(R.id.email_value)).getText().toString());
 				contact.setAddress(((TextView) findViewById(R.id.address_value)).getText().toString());
-				getIntent().putExtra(ContactLauncherActivity.CONTACT, contact);
-				getIntent().putExtra(ContactLauncherActivity.LIST_POSITION, listPosition);
+				getIntent().putExtra(ContactLauncherActivity.CONTACT_ID, contact.getId());
 				setResult(RESULT_OK, getIntent());
 				finish();
 			}
@@ -109,7 +109,7 @@ public class DisplayContactActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, contact.getDisplayName() + " was clicked");
-				Intent editIntent = EditContactActivity.createIntent(DisplayContactActivity.this, contact);
+				Intent editIntent = EditContactActivity.createIntent(DisplayContactActivity.this, contact.getId());
 				startActivityForResult(editIntent, EDIT_RESULT);
 			}
 		});
@@ -144,7 +144,8 @@ public class DisplayContactActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 
 				// extract the contact from the incoming data
-				contact = (Contact) data.getExtras().getSerializable(ContactLauncherActivity.CONTACT);
+				long contact_id = data.getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
+				contact = application.getContactDB().retrieveContact(contact_id);
 				Log.e(TAG, "edited data: " + contact.getDisplayName());
 				populateContactData();
 			}

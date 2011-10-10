@@ -4,7 +4,7 @@
 	android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="8" />
 
-	<application android:icon="@drawable/icon" android:label="@string/contact_launcher">
+	<application android:icon="@drawable/icon" android:label="@string/contact_launcher" android:name="ContactsApplication">
 		<activity android:name=".ContactLauncherActivity"
 			android:label="@string/contact_launcher">
 			<intent-filter>

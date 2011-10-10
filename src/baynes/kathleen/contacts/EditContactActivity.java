@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import baynes.kathleen.contacts.db.ContactsDB;
 import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -34,9 +35,9 @@ public class EditContactActivity extends Activity {
 
 	protected static final String TAG = "baynes.kathleen.contacts.EditContactActivity";
 
-	public static Intent createIntent(Context from, Contact contact) {
+	public static Intent createIntent(Context from, long id) {
 		Intent i = new Intent(from, EditContactActivity.class);
-		i.putExtra(ContactLauncherActivity.CONTACT, contact);
+		i.putExtra(ContactLauncherActivity.CONTACT_ID, id);
 		return i;
 	}
 
@@ -112,6 +113,8 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
+	private ContactsApplication application;
+
 	/** Draws the screen and sets up the values */
 	/*
 	 * (non-Javadoc)
@@ -122,19 +125,28 @@ public class EditContactActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_contact);
-
-		// unpack the bundled extras and set the fields
-		final Contact contact = (Contact) getIntent().getExtras().getSerializable(ContactLauncherActivity.CONTACT);
-		((TextView) findViewById(R.id.edit_display_name_value)).setText(contact.getDisplayName());
-		((TextView) findViewById(R.id.edit_first_name_value)).setText(contact.getFirstName());
-		((TextView) findViewById(R.id.edit_last_name_value)).setText(contact.getLastName());
-		((TextView) findViewById(R.id.birthdate_value)).setText(contact.getBirthday());
-		((TextView) findViewById(R.id.edit_home_phone_value)).setText(contact.getHomePhone());
-		((TextView) findViewById(R.id.edit_work_phone_value)).setText(contact.getWorkPhone());
-		((TextView) findViewById(R.id.edit_mobile_phone_value)).setText(contact.getMobilePhone());
-		((TextView) findViewById(R.id.edit_email_value)).setText(contact.getEmail());
-		((TextView) findViewById(R.id.edit_address_value)).setText(contact.getAddress(), TextView.BufferType.EDITABLE);
-
+		
+		application = (ContactsApplication) this.getApplication();
+		application.setContactDB(new ContactsDB(this));
+		
+		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
+		
+		Log.d(TAG, "Contact id: " + contact_id);
+		
+		final Contact contact =  (contact_id == -1) ? new Contact() : application.getContactDB().retrieveContact(contact_id);
+		
+		if (!contact.isNew()) {
+			// unpack the bundled extras and set the fields
+			((TextView) findViewById(R.id.edit_display_name_value)).setText(contact.getDisplayName());
+			((TextView) findViewById(R.id.edit_first_name_value)).setText(contact.getFirstName());
+			((TextView) findViewById(R.id.edit_last_name_value)).setText(contact.getLastName());
+			((TextView) findViewById(R.id.birthdate_value)).setText(contact.getBirthday());
+			((TextView) findViewById(R.id.edit_home_phone_value)).setText(contact.getHomePhone());
+			((TextView) findViewById(R.id.edit_work_phone_value)).setText(contact.getWorkPhone());
+			((TextView) findViewById(R.id.edit_mobile_phone_value)).setText(contact.getMobilePhone());
+			((TextView) findViewById(R.id.edit_email_value)).setText(contact.getEmail());
+			((TextView) findViewById(R.id.edit_address_value)).setText(contact.getAddress(), TextView.BufferType.EDITABLE);
+		}
 		Button pickBirthdate = (Button) findViewById(R.id.edit_birthdate);
 		Button pickStartTime = (Button) findViewById(R.id.edit_preferred_contact_time_start);
 		Button pickEndTime = (Button) findViewById(R.id.edit_preferred_contact_time_end);
@@ -185,7 +197,12 @@ public class EditContactActivity extends Activity {
 				contact.setMobilePhone(((TextView) findViewById(R.id.edit_mobile_phone_value)).getText().toString());
 				contact.setEmail(((TextView) findViewById(R.id.edit_email_value)).getText().toString());
 				contact.setAddress(((TextView) findViewById(R.id.edit_address_value)).getText().toString());
-				getIntent().putExtra(ContactLauncherActivity.CONTACT, contact);
+				
+				if (contact.isNew()) {
+					contact.setId(application.getContactDB().insert(contact));
+				}
+				
+				getIntent().putExtra(ContactLauncherActivity.CONTACT_ID, contact.getId());
 
 				Log.e(TAG, "post set getDisplayName: " + contact.getDisplayName());
 
@@ -208,10 +225,18 @@ public class EditContactActivity extends Activity {
 		
 		formatter = new SimpleDateFormat("hh:mm aa");
 		try {
-			date = (Date) formatter.parse(contact.getPreferredCallTimeStart());
+			if (contact.isNew()) {
+				date = new Date();
+			}
+			else {
+				date = (Date) formatter.parse(contact.getPreferredCallTimeStart());
+			}
 			mStartHour = date.getHours();
 			mStartMinute = date.getMinutes();
-			date = (Date) formatter.parse(contact.getPreferredCallTimeEnd());
+			
+			if (!contact.isNew()) {
+				date = (Date) formatter.parse(contact.getPreferredCallTimeEnd());
+			}
 			mEndHour = date.getHours();
 			mEndMinute = date.getMinutes();			
 		} catch (ParseException e) {
@@ -222,7 +247,12 @@ public class EditContactActivity extends Activity {
 		
 		formatter = new SimpleDateFormat("MM/dd/yyyy");
 		try {
-	    date = (Date) formatter.parse(contact.getBirthday());
+			if (contact.isNew()) {
+				date = new Date();
+			}
+			else {
+				date = (Date) formatter.parse(contact.getBirthday());
+			}
 	    mYear = date.getYear() + 1900;
 			mDayOfMonth = date.getDate();
 			mMonth = date.getMonth();

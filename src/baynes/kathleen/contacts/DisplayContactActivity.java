@@ -56,13 +56,6 @@ public class DisplayContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display_contact);
 		
-		contactsDB = new ContactsDB(this);
-		
-		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
-		
-		contact = contactsDB.retrieveContact(contact_id);
-		populateContactData();
-
 		Button backToListButton = (Button) findViewById(R.id.back_to_list_button);
 		Button editButton = (Button) findViewById(R.id.edit_button);
 
@@ -113,11 +106,24 @@ public class DisplayContactActivity extends Activity {
 		});
 	}
 
+	@Override
+	protected void onStart() {
+		
+		populateContactData();
+		
+		super.onStart();
+  }
+
 	
 	/**
 	 * Populates contact data into the layout.
 	 */
 	private void populateContactData() {
+		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
+		
+		contactsDB = new ContactsDB(this);
+		
+	  contact = contactsDB.retrieveContact(contact_id);
 		((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
 		((TextView) findViewById(R.id.first_name_value)).setText(contact.getFirstName());
 		((TextView) findViewById(R.id.last_name_value)).setText(contact.getLastName());
@@ -142,10 +148,8 @@ public class DisplayContactActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 
 				// extract the contact from the incoming data
-				long contact_id = data.getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
-				contact = contactsDB.retrieveContact(contact_id);
-				Log.e(TAG, "edited data: " + contact.getDisplayName());
 				populateContactData();
+				Log.d(TAG, "edited data: " + contact.getDisplayName());
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);

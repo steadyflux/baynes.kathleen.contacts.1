@@ -198,13 +198,15 @@ public class EditContactActivity extends Activity {
 				contact.setAddress(((TextView) findViewById(R.id.edit_address_value)).getText().toString());
 				
 				if (contact.isNew()) {
+					Log.d(TAG, "creating contact: " + contact.getDisplayName());
 					contact.setId(contactsDB.insert(contact));
+				}
+				else {
+					Log.d(TAG, "updating contact: " + contact.getDisplayName());
+					contactsDB.update(contact);
 				}
 				
 				getIntent().putExtra(ContactLauncherActivity.CONTACT_ID, contact.getId());
-
-				Log.e(TAG, "post set getDisplayName: " + contact.getDisplayName());
-
 				setResult(RESULT_OK, getIntent());
 				finish();
 			}

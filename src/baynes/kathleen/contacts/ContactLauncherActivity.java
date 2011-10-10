@@ -1,6 +1,7 @@
 package baynes.kathleen.contacts;
 
 import baynes.kathleen.contacts.db.ContactsDB;
+import baynes.kathleen.contacts.models.Contact;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,13 +9,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 /**
  * This is the main Activity to be launched upon starting this application. It
@@ -29,7 +33,7 @@ public class ContactLauncherActivity extends Activity {
 
 	/** The Constant DISPLAY_RESULT. */
 	protected static final int DISPLAY_RESULT = 16;
-	
+
 	/** The Constant CREATE_RESULT. */
 	protected static final int CREATE_RESULT = 21;
 
@@ -39,8 +43,11 @@ public class ContactLauncherActivity extends Activity {
 	/** The contact list adapter. */
 	private ContactListAdapter contactListAdapter = null;
 
-  private ContactsDB contactsDB;
-	
+	private ContactsDB contactsDB;
+
+	/** The inflater. */
+	private LayoutInflater inflater;
+
 	/**
 	 * This class handles display of the contacts and populated the rows of the
 	 * ListView.
@@ -51,23 +58,28 @@ public class ContactLauncherActivity extends Activity {
 			super(context, layout, c, from, to);
 		}
 
-		// @Override
-		// public View getView(int position, View availableView, ViewGroup group) {
-		//
-		// View row;
-		//
-		// if (null == availableView) {
-		// row = inflater.inflate(R.layout.contact_entry, null);
-		// } else {
-		// row = availableView;
-		// }
-		// TextView displayName = (TextView) row.findViewById(R.id.display_name);
-		// Contact contact = contacts.get(position);
-		// displayName.setText(contact.getDisplayName());
-		// TextView phoneNumber = (TextView) row.findViewById(R.id.home_phone);
-		// phoneNumber.setText("(" + contact.getHomePhone() + ")");
-		// return row;
-		// }
+		@Override
+		public View getView(int position, View availableView, ViewGroup group) {
+
+			View row;
+
+			if (null == availableView) {
+				row = inflater.inflate(R.layout.contact_entry, null);
+			} else {
+				row = availableView;
+			}
+			TextView displayName = (TextView) row.findViewById(R.id.display_name);
+			Contact contact = contactsDB.retrieveContact(position + 1);
+
+			Log.d(TAG, "In get view: position = " + position);
+			
+			if (contact != null) {
+				displayName.setText(contact.getDisplayName());
+				TextView phoneNumber = (TextView) row.findViewById(R.id.home_phone);
+				phoneNumber.setText("(" + contact.getHomePhone() + ")");
+			}
+			return row;
+		}
 
 	}
 
@@ -81,8 +93,11 @@ public class ContactLauncherActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list_layout);
+	}
 
-		contactsDB = new ContactsDB(this);
+	@Override
+	protected void onStart() {
+
 		populateList();
 
 		Button createContactButton = (Button) findViewById(R.id.create_contact_button);
@@ -105,7 +120,10 @@ public class ContactLauncherActivity extends Activity {
 	}
 
 	private void populateList() {
-	  ListView list = (ListView) findViewById(R.id.contact_list);
+		contactsDB = new ContactsDB(this);
+
+		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ListView list = (ListView) findViewById(R.id.contact_list);
 
 		contactListAdapter = new ContactListAdapter(this, R.layout.contact_entry, contactsDB.getAllCursor(), new String[] {
 		    ContactsDB.DISPLAY_NAME, ContactsDB.HOME_PHONE }, new int[] { R.id.display_name_value, R.id.home_phone_value });
@@ -119,7 +137,7 @@ public class ContactLauncherActivity extends Activity {
 				startActivityForResult(displayIntent, DISPLAY_RESULT);
 			}
 		});
-  }
+	}
 
 	/*
 	 * Handles returned contacts and refreshes the contact list with updated (if

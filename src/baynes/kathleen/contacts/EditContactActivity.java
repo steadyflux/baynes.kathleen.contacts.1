@@ -25,6 +25,7 @@ import android.widget.TimePicker;
 /**
  * This Activity displays data related to a contact and
  * enables editing (or canceling) of the contents of each field.
+ * It also allows the creation of new contacts when passed a contact id of -1
  * 
  * Borrows heavily from:
  * http://developer.android.com/resources/tutorials/views/hello-timepicker.html
@@ -35,6 +36,13 @@ public class EditContactActivity extends Activity {
 
 	protected static final String TAG = "baynes.kathleen.contacts.EditContactActivity";
 
+	/**
+	 * helper method
+	 *
+	 * @param from the from activity
+	 * @param id the id of the contact
+	 * @return the intent to be used
+	 */
 	public static Intent createIntent(Context from, long id) {
 		Intent i = new Intent(from, EditContactActivity.class);
 		i.putExtra(ContactLauncherActivity.CONTACT_ID, id);
@@ -115,9 +123,8 @@ public class EditContactActivity extends Activity {
 
 	private ContactsDB contactsDB;
 
-	/** Draws the screen and sets up the values */
-	/*
-	 * (non-Javadoc)
+	/** 
+	 * Draws the screen and sets up the values
 	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -172,13 +179,16 @@ public class EditContactActivity extends Activity {
 
 		saveButton.setOnClickListener(new OnClickListener() {
 			
-			/* (non-Javadoc)
+			/** 
+			 * 
+			 * adds or update the contact when the save button is clicked
+			 * 
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
 			public void onClick(View v) {
 
-				Log.e(TAG, "on the click listener: "
+				Log.d(TAG, "on the click listener: "
 				    + ((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
 
 				contact.setDisplayName(((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
@@ -269,9 +279,8 @@ public class EditContactActivity extends Activity {
 
 	}
 
-	/** sets up the dialogs and adds their respective listeners */
-	/*
-	 * (non-Javadoc)
+	/** 
+	 * sets up the dialogs and adds their respective listeners
 	 * 
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
@@ -322,9 +331,14 @@ public class EditContactActivity extends Activity {
 		    .append("/").append(pad(mDayOfMonth)).append("/").append(mYear));
 	}
 	
-
+	/**
+	 * Ensures that the database is closed when the activity pauses
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	protected void onPause() {
+		Log.d(TAG, "PAUSING and closing the db");
 		super.onPause();
 		contactsDB.close();
 	}

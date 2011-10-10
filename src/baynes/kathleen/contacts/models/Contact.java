@@ -341,7 +341,13 @@ public class Contact implements Serializable {
 	public void setId(long id) {
 	  this.id = id;
   }
-
+	
+	
+	/**
+	 * Checks if this is a new contact (has an id of 0)
+	 *
+	 * @return true, if is new
+	 */
 	public boolean isNew() {
 	  return (this.id == 0L);
   }

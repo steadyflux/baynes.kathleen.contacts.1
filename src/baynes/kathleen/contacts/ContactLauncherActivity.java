@@ -43,7 +43,9 @@ public class ContactLauncherActivity extends Activity {
 	/** The contact list adapter. */
 	private ContactListAdapter contactListAdapter = null;
 
+	/** The contact database */
 	private ContactsDB contactsDB;
+	
 
 	/** The inflater. */
 	private LayoutInflater inflater;
@@ -70,13 +72,11 @@ public class ContactLauncherActivity extends Activity {
 			}
 			TextView displayName = (TextView) row.findViewById(R.id.display_name);
 			Contact contact = contactsDB.retrieveContact(position + 1);
-
-			Log.d(TAG, "In get view: position = " + position);
 			
 			if (contact != null) {
 				displayName.setText(contact.getDisplayName());
 				TextView phoneNumber = (TextView) row.findViewById(R.id.home_phone);
-				phoneNumber.setText("(" + contact.getHomePhone() + ")");
+				phoneNumber.setText("(" + contact.getHomePhone() + ")" + " [id:" + contact.getId() + "]");
 			}
 			return row;
 		}
@@ -95,6 +95,13 @@ public class ContactLauncherActivity extends Activity {
 		setContentView(R.layout.contact_list_layout);
 	}
 
+	
+	/**
+	 * 
+	 * sets up the event listener each time the activity regain focus
+	 * 
+	 * @see android.app.Activity#onStart()
+	 */
 	@Override
 	protected void onStart() {
 
@@ -119,6 +126,9 @@ public class ContactLauncherActivity extends Activity {
 		super.onStart();
 	}
 
+	/**
+	 * Populates the contact list view from the database
+	 */
 	private void populateList() {
 		contactsDB = new ContactsDB(this);
 
@@ -127,19 +137,23 @@ public class ContactLauncherActivity extends Activity {
 
 		contactListAdapter = new ContactListAdapter(this, R.layout.contact_entry, contactsDB.getAllCursor(), new String[] {
 		    ContactsDB.DISPLAY_NAME, ContactsDB.HOME_PHONE }, new int[] { R.id.display_name_value, R.id.home_phone_value });
-
+		
+		//this following line should manage the cursor related to the adapter. this should stop pesky stacktraces in the log
+		startManagingCursor(contactListAdapter.getCursor());
+		
 		list.setAdapter(contactListAdapter);
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-				Log.d(TAG, id + " was clicked");
+				Log.d(TAG, "[Position: " + position + "], [id:" + id + "] was clicked");
 				Intent displayIntent = DisplayContactActivity.createIntent(ContactLauncherActivity.this, id);
 				startActivityForResult(displayIntent, DISPLAY_RESULT);
 			}
 		});
+		
 	}
 
-	/*
+	/**
 	 * Handles returned contacts and refreshes the contact list with updated (if
 	 * any) data
 	 * 
@@ -158,8 +172,14 @@ public class ContactLauncherActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	/**
+	 * Ensures that the database is closed when the activity pauses
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	protected void onPause() {
+		Log.d(TAG, "PAUSING and closing the db");
 		super.onPause();
 		contactsDB.close();
 	}

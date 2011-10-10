@@ -61,30 +61,13 @@ public class DisplayContactActivity extends Activity {
 
 		backToListButton.setOnClickListener(new OnClickListener() {
 
-			/*
-			 * sends updated contact to the ContactLauncherActivity
+			/**
+			 * sends contact id to the ContactLauncherActivity
 			 * 
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
 			public void onClick(View v) {
-				contact.setDisplayName(((TextView) findViewById(R.id.display_name_value)).getText().toString());
-				contact.setFirstName(((TextView) findViewById(R.id.first_name_value)).getText().toString());
-				contact.setLastName(((TextView) findViewById(R.id.last_name_value)).getText().toString());
-				contact.setBirthday(((TextView) findViewById(R.id.birthdate_value)).getText().toString());
-				contact.setPreferredCallTimeStart(((TextView) findViewById(R.id.preferred_contact_time_value)).toString());
-				contact.setPreferredCallTimeEnd(((TextView) findViewById(R.id.preferred_contact_time_value)).toString());
-				contact.setPreferredCallTimeStart(Contact
-				    .parsePreferredStartTimeFromString(((TextView) findViewById(R.id.preferred_contact_time_value)).getText()
-				        .toString()));
-				contact.setPreferredCallTimeEnd(Contact
-				    .parsePreferredEndTimeFromString(((TextView) findViewById(R.id.preferred_contact_time_value)).getText()
-				        .toString()));
-				contact.setHomePhone(((TextView) findViewById(R.id.home_phone_value)).getText().toString());
-				contact.setWorkPhone(((TextView) findViewById(R.id.work_phone_value)).getText().toString());
-				contact.setMobilePhone(((TextView) findViewById(R.id.mobile_phone_value)).getText().toString());
-				contact.setEmail(((TextView) findViewById(R.id.email_value)).getText().toString());
-				contact.setAddress(((TextView) findViewById(R.id.address_value)).getText().toString());
 				getIntent().putExtra(ContactLauncherActivity.CONTACT_ID, contact.getId());
 				setResult(RESULT_OK, getIntent());
 				finish();
@@ -92,8 +75,8 @@ public class DisplayContactActivity extends Activity {
 		});
 
 		editButton.setOnClickListener(new OnClickListener() {
-			/*
-			 * sends updated contact to the EditContactActivity
+			/**
+			 * sends the contact id to the EditContactActivity
 			 * 
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
@@ -106,6 +89,11 @@ public class DisplayContactActivity extends Activity {
 		});
 	}
 
+	/**
+	 * populates the view when this activity starts
+	 * 
+	 * @see android.app.Activity#onStart()
+	 */
 	@Override
 	protected void onStart() {
 		
@@ -135,10 +123,13 @@ public class DisplayContactActivity extends Activity {
 		((TextView) findViewById(R.id.mobile_phone_value)).setText(contact.getMobilePhone());
 		((TextView) findViewById(R.id.email_value)).setText(contact.getEmail());
 		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
+		
+		contactsDB.close();
 	}
 
-	/* 
+	/** 
 	 * updates the layout based on updates from the edit screen
+	 * 
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
 	 */
 	@Override
@@ -154,10 +145,5 @@ public class DisplayContactActivity extends Activity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		contactsDB.close();
-	}
+
 }

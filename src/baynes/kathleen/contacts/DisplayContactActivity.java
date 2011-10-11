@@ -21,15 +21,13 @@ import android.widget.TextView;
 public class DisplayContactActivity extends Activity {
 
 	/** The Constant TAG. */
-	protected static final String TAG = "baynes.kathleen.contacts.DisplayContactActivity";
+	protected static final String TAG = "baynes.kathleen.contacts";
 	
 	/** The Constant EDIT_RESULT. */
 	protected static final int EDIT_RESULT = 17;
 
 	/** The contact. */
 	private Contact contact;
-
-	private ContactsDB contactsDB;
 
 	/**
 	 * Creates the intent.
@@ -109,7 +107,7 @@ public class DisplayContactActivity extends Activity {
 	private void populateContactData() {
 		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
 		
-		contactsDB = new ContactsDB(this);
+		ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
 		
 	  contact = contactsDB.retrieveContact(contact_id);
 		((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
@@ -124,7 +122,6 @@ public class DisplayContactActivity extends Activity {
 		((TextView) findViewById(R.id.email_value)).setText(contact.getEmail());
 		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
 		
-		contactsDB.close();
 	}
 
 	/** 

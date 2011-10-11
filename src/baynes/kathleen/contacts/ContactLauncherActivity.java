@@ -23,7 +23,7 @@ import android.widget.SimpleCursorAdapter;
 public class ContactLauncherActivity extends Activity {
 
 	/** Based off in-class example. */
-	protected static final String TAG = "baynes.kathleen.contacts.ContactLauncherActivity";
+	protected static final String TAG = "baynes.kathleen.contacts";
 
 	/** The Constant DISPLAY_RESULT. */
 	protected static final int DISPLAY_RESULT = 16;
@@ -33,9 +33,6 @@ public class ContactLauncherActivity extends Activity {
 
 	/** The Constant CONTACT, used for populating extras */
 	public static final String CONTACT_ID = "contact_id";
-
-	/** The contact database */
-	private ContactsDB contactsDB;
 
 	/**
 	 * Called when the activity is first created.
@@ -84,7 +81,8 @@ public class ContactLauncherActivity extends Activity {
 	 * Populates the contact list view from the database
 	 */
 	private void populateList() {
-		contactsDB = new ContactsDB(this);
+		
+		ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
 
 		ListView list = (ListView) findViewById(R.id.contact_list);
 
@@ -119,17 +117,5 @@ public class ContactLauncherActivity extends Activity {
 		}
 		populateList();
 		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	/**
-	 * Ensures that the database is closed when the activity pauses
-	 * 
-	 * @see android.app.Activity#onPause()
-	 */
-	@Override
-	protected void onPause() {
-		Log.d(TAG, "PAUSING and closing the db");
-		super.onPause();
-		contactsDB.close();
 	}
 }

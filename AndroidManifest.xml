@@ -8,7 +8,8 @@
 
   <application
     android:icon="@drawable/icon"
-    android:label="@string/contact_launcher">
+    android:label="@string/contact_launcher"
+    android:name="ContactApplication">
     <activity
       android:name=".ContactLauncherActivity"
       android:label="@string/contact_launcher">

@@ -34,7 +34,7 @@ import android.widget.TimePicker;
  **/
 public class EditContactActivity extends Activity {
 
-	protected static final String TAG = "baynes.kathleen.contacts.EditContactActivity";
+	protected static final String TAG = "baynes.kathleen.contacts";
 
 	/**
 	 * helper method
@@ -121,8 +121,6 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
-	private ContactsDB contactsDB;
-
 	/** 
 	 * Draws the screen and sets up the values
 	 * 
@@ -133,7 +131,9 @@ public class EditContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_contact);
 		
-		contactsDB = new ContactsDB(this);
+		ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
+		
+		Log.e(TAG, contactsDB.toString());
 		
 		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
 		
@@ -188,6 +188,8 @@ public class EditContactActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
+				ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
+				
 				Log.d(TAG, "on the click listener: "
 				    + ((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
 
@@ -331,15 +333,4 @@ public class EditContactActivity extends Activity {
 		    .append("/").append(pad(mDayOfMonth)).append("/").append(mYear));
 	}
 	
-	/**
-	 * Ensures that the database is closed when the activity pauses
-	 * 
-	 * @see android.app.Activity#onPause()
-	 */
-	@Override
-	protected void onPause() {
-		Log.d(TAG, "PAUSING and closing the db");
-		super.onPause();
-		contactsDB.close();
-	}
 }

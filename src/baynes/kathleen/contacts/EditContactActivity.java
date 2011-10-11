@@ -10,6 +10,9 @@ import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 /**
  * This Activity displays data related to a contact and
@@ -36,6 +40,9 @@ public class EditContactActivity extends Activity {
 
 	protected static final String TAG = "baynes.kathleen.contacts";
 
+	private static final int CONTACT_CREATED = 1;
+	private static final int CONTACT_UPDATED = 2;
+	
 	/**
 	 * helper method
 	 *
@@ -212,10 +219,16 @@ public class EditContactActivity extends Activity {
 				if (contact.isNew()) {
 					Log.d(TAG, "creating contact: " + contact.getDisplayName());
 					contact.setId(contactsDB.insert(contact));
+
+					generateToastAndNotification(CONTACT_CREATED, contact.getId(), "Contact created", "Contact '" + contact.getDisplayName() + "' was added to your contact list");
+					
 				}
 				else {
 					Log.d(TAG, "updating contact: " + contact.getDisplayName());
 					contactsDB.update(contact);
+					
+					generateToastAndNotification(CONTACT_UPDATED, contact.getId(), "Contact updated", "Contact '" + contact.getDisplayName() + "' was updated.");
+					
 				}
 				
 				getIntent().putExtra(ContactLauncherActivity.CONTACT_ID, contact.getId());
@@ -333,4 +346,23 @@ public class EditContactActivity extends Activity {
 		    .append("/").append(pad(mDayOfMonth)).append("/").append(mYear));
 	}
 	
+	
+	protected void generateToastAndNotification(int ntfId, long contactId, String shortMsg, String notificationMsg) {
+		Context context = getApplicationContext();
+
+		Toast.makeText(context, shortMsg, Toast.LENGTH_SHORT).show();
+		
+		NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification notification = new Notification(android.R.drawable.ic_menu_save, notificationMsg, System.currentTimeMillis());
+		
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.defaults |= Notification.DEFAULT_VIBRATE;
+		
+		Intent notificationIntent = DisplayContactActivity.createIntent(this, contactId);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+
+		notification.setLatestEventInfo(context, shortMsg, notificationMsg, contentIntent);
+		
+		notificationManager.notify(ntfId, notification);
+	}
 }

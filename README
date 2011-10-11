@@ -1,24 +1,34 @@
-Almost done with the contacts application... (one more after this)
+It's the last contacts application... finally!
 
-Now we'll add data persistence using a SQLite database.
+Now we'll use the real Android Contacts provider to store your contact data. We'll also add a few notifications to try them out.
 
 Your application should behave as follows:
 
-1.    Make sure your contact class has an id.
-2.    All database access should be managed via a helper class (I call it ContactsDB). Implement this in a similar manner to the example I showed in class. 
-		This class will have methods like getAllContacts(), getContact(id), insertContact(Contact) and updateContact(Contact). 
-		This class should manage all database access. You'll need to create a new instance of this class in each activity that performs database access. 
-		Be sure to have a close() method that can be called from your activity's onPause() so you can close the underlying database connection, or android will complain.
-3.    When creating your database, be sure to add a field called _id as described in class (integer primary key autoincrement)
-4.    The list activity should read all contacts from the database and display them in the list. You will no longer be using hardcoded contacts.
-5.    On the list activity, add a "Create" menu item. Pressing this should start your edit activity. 
-		Pass a flag in your intent to indicate that you're creating a new contact, and -1 for the id of the contact being created. 
-		(You won't use the id when creating a new contact). Do not pass the contact data.
-6.    On the display activity, when starting the edit activity, pass a flag to indicate that you're updating an existing entry, 
-		and the id of the contact being edited. Do not pass the contact data.
-7.    On the edit activity, read the contact from the database (based on the id that was passed in). When the save button is pressed, either insert a new contact 
-		(if creating a contact) or update an existing contact. Do not return the contact to the caller.
-8.    In activities that need to update information, re-read the contact or contact list. I recommend moving your view-updating code to onStart().
-9.    You can use SimpleCursorAdapter to manage your list entries based on a database cursor if you would like. If you do, your getAllContacts() 
-		method in your ContactsDB class will need to return a cursor. If you don't use this, your getAllContacts() should return a list of populated contacts objects.
+    Whenever an entry is created:
+        Display a Toast stating "contact created"
+        Add a notification stating "Contact <name> was added to your contact list". This notification should auto-close when clicked, and display your "display contact" activity for the added contact. (Note that pressing "back" from this contact display will go back to wherever the user was when they selected the notification; it will not go back to the contact list)
+    Whenever an entry is updated:
+        Display a Toast stating "contact updated"
+        Add a notification stating "Contact <name> was updated". This notification should auto-close when clicked, and display your "display contact" activity for the added contact. (Note that pressing "back" from this contact display will go back to wherever the user was when they selected the notification; it will not go back to the contact list)
+    (Note 1: I don't recommend using both a Toast and a notification like this; it's obnoxious, but this allows you to see how each of them behave)
+    (Note 2: I recommend you get the notification part of the assignment out of the way before changing your data storage to use the contacts provider)
+    Modify your application to use the Android Contacts content provider to retrieve, insert and update contacts. A few notes on this:
+        The Android "display name" is different than what we've been using. Ours is more like a "nickname".
+        Focus first on getting the list of contacts displayed. Feel free to use SimpleCursorAdapter to display just the android display name. Add contacts through the normal Android Contacts application and you should see them listed in your UI.
+        When you initially set up to read the data for display, skip your custom fields (displayName, birthday and contact times) for now. Add them back in after you implement the insert/update support.
+        Next, retrieve all data for a contact. You'll need to use the following content URIs:
+            ContactsContract.Data.CONTENT_URI - to get your extension data and
+                ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME (first name)
+                ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME (last name)
+                Note that for the names you'll use mime type ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE for your extension data, you'll use your custom mime type
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI - to get the phone numbers. Look for phone numbers assigned with the following types. You can assume there's only a single phone number of each type for this assignment:
+                ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+                ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+                ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
+            ContactsContract.CommonDataKinds.Email.CONTENT_URI - for email addresses. Assume there's only one
+            ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI - for postal address. Again, assume there's only one. Use its ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS for the value. Not quite right, but good enough for this assignment.
+        Use a custom mime type for your display name, birthday and contact times. You can store these in a single data row, or multiple data rows.
+        Next, add in insert support.. Use ContentProviderOperation as demonstrated in class.
+        Finally, add in update support. Again, use ContentProviderOperation, but with newUpdate and .withSelection() instead of newInsert() and .withValueBackReference().
 
+Note that this assignment may take a little time to implement... Getting the details right when using the content provider can take a little trial and error...

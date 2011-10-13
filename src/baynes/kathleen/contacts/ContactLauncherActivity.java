@@ -1,7 +1,5 @@
 package baynes.kathleen.contacts;
 
-import baynes.kathleen.contacts.db.ContactsDB;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -85,13 +83,13 @@ public class ContactLauncherActivity extends Activity {
 	 */
 	private void populateList() {
 
-    Cursor cursor = getContacts();
+    Cursor cursor = getAllContacts();
     String[] fields = new String[] {
     		ContactsContract.Data._ID,
         ContactsContract.Data.DISPLAY_NAME
     };
 
-    Log.d(TAG, "cursor length: " + cursor.getCount());
+    Log.d(TAG, "contact list length: " + cursor.getCount());
     
 		ListView list = (ListView) findViewById(R.id.contact_list);
 
@@ -132,7 +130,7 @@ public class ContactLauncherActivity extends Activity {
    *
    * @return A cursor for for accessing the contact list.
    */
-  private Cursor getContacts()
+  private Cursor getAllContacts()
   {   
 			Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
 	

@@ -1,6 +1,5 @@
 package baynes.kathleen.contacts;
 
-import baynes.kathleen.contacts.db.ContactsDB;
 import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
 import android.content.Context;
@@ -107,9 +106,7 @@ public class DisplayContactActivity extends Activity {
 	private void populateContactData() {
 		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
 		
-		ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
-		
-	  contact = contactsDB.retrieveContact(contact_id);
+	  contact = ((ContactApplication)getApplication()).retrieveContact(contact_id);
 		((TextView) findViewById(R.id.display_name_value)).setText(contact.getDisplayName());
 		((TextView) findViewById(R.id.first_name_value)).setText(contact.getFirstName());
 		((TextView) findViewById(R.id.last_name_value)).setText(contact.getLastName());

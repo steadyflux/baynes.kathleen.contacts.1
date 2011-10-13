@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import baynes.kathleen.contacts.db.ContactsDB;
 import baynes.kathleen.contacts.models.Contact;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -138,15 +137,11 @@ public class EditContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_contact);
 		
-		ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
-		
-		Log.e(TAG, contactsDB.toString());
-		
 		long contact_id = getIntent().getExtras().getLong(ContactLauncherActivity.CONTACT_ID);
 		
 		Log.d(TAG, "Contact id: " + contact_id);
 		
-		final Contact contact =  (contact_id == -1) ? new Contact() : contactsDB.retrieveContact(contact_id);
+		final Contact contact =  (contact_id == -1) ? new Contact() : ((ContactApplication) getApplication()).retrieveContact(contact_id);
 		
 		if (!contact.isNew()) {
 			// unpack the bundled extras and set the fields
@@ -195,7 +190,8 @@ public class EditContactActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
+				//TODO implement edit
+				//ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
 				
 				Log.d(TAG, "on the click listener: "
 				    + ((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
@@ -218,14 +214,16 @@ public class EditContactActivity extends Activity {
 				
 				if (contact.isNew()) {
 					Log.d(TAG, "creating contact: " + contact.getDisplayName());
-					contact.setId(contactsDB.insert(contact));
+					//TODO implement insert
+					//contact.setId(contactsDB.insert(contact));
 
 					generateToastAndNotification(CONTACT_CREATED, contact.getId(), "Contact created", "Contact '" + contact.getDisplayName() + "' was added to your contact list");
 					
 				}
 				else {
 					Log.d(TAG, "updating contact: " + contact.getDisplayName());
-					contactsDB.update(contact);
+					//TODO implement insert
+//					contactsDB.update(contact);
 					
 					generateToastAndNotification(CONTACT_UPDATED, contact.getId(), "Contact updated", "Contact '" + contact.getDisplayName() + "' was updated.");
 					
@@ -247,22 +245,22 @@ public class EditContactActivity extends Activity {
 
 		
 		DateFormat formatter;
-		Date date;
+		Date date = new Date();
 		
 		formatter = new SimpleDateFormat("hh:mm aa");
 		try {
-			if (contact.isNew()) {
-				date = new Date();
+			
+			if (contact.getPreferredCallTimeStart() != null) {
+					date = (Date) formatter.parse(contact.getPreferredCallTimeStart());
 			}
-			else {
-				date = (Date) formatter.parse(contact.getPreferredCallTimeStart());
-			}
+			
 			mStartHour = date.getHours();
 			mStartMinute = date.getMinutes();
 			
-			if (!contact.isNew()) {
+			if (contact.getPreferredCallTimeEnd() != null) {
 				date = (Date) formatter.parse(contact.getPreferredCallTimeEnd());
 			}
+			
 			mEndHour = date.getHours();
 			mEndMinute = date.getMinutes();			
 		} catch (ParseException e) {
@@ -273,12 +271,12 @@ public class EditContactActivity extends Activity {
 		
 		formatter = new SimpleDateFormat("MM/dd/yyyy");
 		try {
-			if (contact.isNew()) {
-				date = new Date();
-			}
-			else {
+			date = new Date();
+			
+			if (contact.getBirthday() != null) {
 				date = (Date) formatter.parse(contact.getBirthday());
 			}
+			
 	    mYear = date.getYear() + 1900;
 			mDayOfMonth = date.getDate();
 			mMonth = date.getMonth();

@@ -47,6 +47,4 @@ public class ContactApplication extends Application {
 		}
 	  return contactsDB;
   }
-	
-	
 }

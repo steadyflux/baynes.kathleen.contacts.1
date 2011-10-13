@@ -4,7 +4,10 @@ import baynes.kathleen.contacts.db.ContactsDB;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -81,13 +84,19 @@ public class ContactLauncherActivity extends Activity {
 	 * Populates the contact list view from the database
 	 */
 	private void populateList() {
-		
-		ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
 
+    Cursor cursor = getContacts();
+    String[] fields = new String[] {
+    		ContactsContract.Data._ID,
+        ContactsContract.Data.DISPLAY_NAME
+    };
+
+    Log.d(TAG, "cursor length: " + cursor.getCount());
+    
 		ListView list = (ListView) findViewById(R.id.contact_list);
 
-		list.setAdapter(new SimpleCursorAdapter(this, R.layout.contact_entry, contactsDB.getAllCursor(), new String[] {
-				ContactsDB.DISPLAY_NAME, ContactsDB.HOME_PHONE }, new int[] { R.id.display_name, R.id.home_phone }));
+		list.setAdapter(new SimpleCursorAdapter(this, R.layout.contact_entry, cursor, fields, 
+				new int[] { R.id.home_phone, R.id.display_name }));
 		
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -97,7 +106,6 @@ public class ContactLauncherActivity extends Activity {
 				startActivityForResult(displayIntent, DISPLAY_RESULT);
 			}
 		});
-		
 	}
 
 	/**
@@ -118,4 +126,26 @@ public class ContactLauncherActivity extends Activity {
 		populateList();
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
+  /**
+   * Obtains the contact list for the currently selected account.
+   *
+   * @return A cursor for for accessing the contact list.
+   */
+  private Cursor getContacts()
+  {   
+			Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
+	
+			String[] projection = new String[] {
+					ContactsContract.Contacts._ID,
+					ContactsContract.Contacts.DISPLAY_NAME,
+					ContactsContract.Contacts.HAS_PHONE_NUMBER
+			};
+	
+			String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
+			String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+			Cursor contacts = managedQuery(contactUri, projection, selection, null, sortOrder);
+      
+      return contacts;
+  }
 }

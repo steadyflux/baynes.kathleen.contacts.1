@@ -214,8 +214,8 @@ public class EditContactActivity extends Activity {
 				
 				if (contact.isNew()) {
 					Log.d(TAG, "creating contact: " + contact.getDisplayName());
-					//TODO implement insert
-					//contact.setId(contactsDB.insert(contact));
+
+					contact.setId(((ContactApplication) getApplication()).createContact(contact));
 
 					generateToastAndNotification(CONTACT_CREATED, contact.getId(), "Contact created", "Contact '" + contact.getDisplayName() + "' was added to your contact list");
 					
@@ -354,7 +354,6 @@ public class EditContactActivity extends Activity {
 		Notification notification = new Notification(android.R.drawable.ic_menu_save, notificationMsg, System.currentTimeMillis());
 		
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		notification.defaults |= Notification.DEFAULT_VIBRATE;
 		
 		Intent notificationIntent = DisplayContactActivity.createIntent(this, contactId);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);

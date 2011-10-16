@@ -19,16 +19,22 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.Data;
 import android.util.Log;
 
+/**
+ * The Class ContactApplication. This is shared by all Aactivities in the app
+ */
 public class ContactApplication extends Application {
 
+	/** The Constant TAG. */
 	private static final String TAG = "baynes.kathleen.contacts";
 	  
   /**
    * 
-   * Heavily Relied on source: 
+   * This inserts the contact into the android database, including several custom columns
+   * Heavily Relied on source:
    * http://androidcookbook.com/Recipe.seam;?recipeId=334&recipeFrom=ViewTOC
-   * @param contact
-   * @return
+   *
+   * @param contact the contact
+   * @return the long
    */
 	public long createContact(Contact contact) {
 		Log.d(TAG, "Creating contact " + contact.getDisplayName());
@@ -103,6 +109,12 @@ public class ContactApplication extends Application {
 		return contactId;
 	}
 	
+	/**
+	 * Retrieve contact from android database
+	 *
+	 * @param contactId the contact id
+	 * @return the contact
+	 */
 	public Contact retrieveContact(long contactId) {
 		Contact contact = new Contact();
 		Log.d(TAG, "Retrieving contact " + contactId);
@@ -228,6 +240,11 @@ public class ContactApplication extends Application {
 		return contact;
 	}
 	
+	/**
+	 * Update contact in the android database
+	 *
+	 * @param contact the contact
+	 */
 	public void updateContact(Contact contact) {
 		Log.d(TAG, "Updating contact " + contact.getDisplayName());
 		Log.d(TAG, "Contact Id: " + contact.getId());

@@ -63,7 +63,7 @@ public class ContactLauncherActivity extends Activity {
 
 		createContactButton.setOnClickListener(new OnClickListener() {
 
-			/*
+			/**
 			 * sends to the edit contact activity to create a new contact
 			 * 
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -79,7 +79,7 @@ public class ContactLauncherActivity extends Activity {
 	}
 
 	/**
-	 * Populates the contact list view from the database
+	 * Populates the contact list view from the android contact database
 	 */
 	private void populateList() {
 

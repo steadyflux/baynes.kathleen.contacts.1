@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+// TODO: Auto-generated Javadoc
 /**
  * This Activity displays data related to a contact and
  * enables editing (or canceling) of the contents of each field.
@@ -37,13 +38,17 @@ import android.widget.Toast;
  **/
 public class EditContactActivity extends Activity {
 
+	/** The Constant TAG. */
 	protected static final String TAG = "baynes.kathleen.contacts";
 
+	/** The Constant CONTACT_CREATED. */
 	private static final int CONTACT_CREATED = 1;
+	
+	/** The Constant CONTACT_UPDATED. */
 	private static final int CONTACT_UPDATED = 2;
 	
 	/**
-	 * helper method
+	 * helper method.
 	 *
 	 * @param from the from activity
 	 * @param id the id of the contact
@@ -55,41 +60,37 @@ public class EditContactActivity extends Activity {
 		return i;
 	}
 
-	/** The starting hour for the preferred contact time */
+	/** The starting hour for the preferred contact time. */
 	protected int mStartHour;
 
-	/** The starting minute for the preferred contact time */
+	/** The starting minute for the preferred contact time. */
 	protected int mStartMinute;
 
-	/** The end hour for the preferred contact time */
+	/** The end hour for the preferred contact time. */
 	protected int mEndHour;
 
-	/** The end minute for the preferred contact time */
+	/** The end minute for the preferred contact time. */
 	protected int mEndMinute;
 
-	/** The year for the contact's birthday */
+	/** The year for the contact's birthday. */
 	protected int mYear;
 
-	/** The month for the contact's birthday (remember to use zero index!) */
+	/** The month for the contact's birthday (remember to use zero index!). */
 	protected int mMonth;
 
-	/** The day of the month for the contact's birthday */
+	/** The day of the month for the contact's birthday. */
 	protected int mDayOfMonth;
 
-	/** identifies the birthday DatePicker dialog */
+	/** identifies the birthday DatePicker dialog. */
 	private static final int BIRTHDAY_DIALOG_ID = 0;
 
-	/** identifies the preferred contact start time TimePicker dialog */
+	/** identifies the preferred contact start time TimePicker dialog. */
 	private static final int START_TIME_DIALOG_ID = 1;
 
-	/** identifies the preferred contact end time TimePicker dialog */
+	/** identifies the preferred contact end time TimePicker dialog. */
 	private static final int END_TIME_DIALOG_ID = 2;
 
-	/**
-	 * the callback received when the user sets the start time in the TimePicker
-	 * dialog can most likely be refactored into shared listener for start and end
-	 * time
-	 */
+	/** the callback received when the user sets the start time in the TimePicker dialog can most likely be refactored into shared listener for start and end time. */
 	private TimePickerDialog.OnTimeSetListener mStartTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -99,11 +100,7 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
-	/**
-	 * the callback received when the user sets the end time in the TimePicker
-	 * dialog can most likely be refactored into shared listener for start and end
-	 * time
-	 */
+	/** the callback received when the user sets the end time in the TimePicker dialog can most likely be refactored into shared listener for start and end time. */
 	private TimePickerDialog.OnTimeSetListener mEndTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -113,10 +110,7 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
-	/**
-	 * the callback received when the user sets the birthday in the DatePicker
-	 * dialog
-	 */
+	/** the callback received when the user sets the birthday in the DatePicker dialog. */
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		@Override
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -127,9 +121,10 @@ public class EditContactActivity extends Activity {
 		}
 	};
 
-	/** 
-	 * Draws the screen and sets up the values
-	 * 
+	/**
+	 * Draws the screen and sets up the values.
+	 *
+	 * @param savedInstanceState the saved instance state
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -190,9 +185,6 @@ public class EditContactActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				//TODO implement edit
-				//ContactsDB contactsDB = ((ContactApplication)getApplication()).getContactsDB();
-				
 				Log.d(TAG, "on the click listener: "
 				    + ((TextView) findViewById(R.id.edit_display_name_value)).getText().toString());
 
@@ -217,12 +209,16 @@ public class EditContactActivity extends Activity {
 
 					contact.setId(((ContactApplication) getApplication()).createContact(contact));
 
+					//create and dispay notfication and toast
 					generateToastAndNotification(CONTACT_CREATED, contact.getId(), "Contact created", "Contact '" + contact.getDisplayName() + "' was added to your contact list");
 					
 				}
 				else {
 					Log.d(TAG, "updating contact: " + contact.getDisplayName());
+					
 					((ContactApplication) getApplication()).updateContact(contact);
+					
+				  //create and dispay notfication and toast
 					generateToastAndNotification(CONTACT_UPDATED, contact.getId(), "Contact updated", "Contact '" + contact.getDisplayName() + "' was updated.");
 					
 				}
@@ -290,9 +286,11 @@ public class EditContactActivity extends Activity {
 
 	}
 
-	/** 
-	 * sets up the dialogs and adds their respective listeners
-	 * 
+	/**
+	 * sets up the dialogs and adds their respective listeners.
+	 *
+	 * @param id the id
+	 * @return the dialog
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
@@ -343,6 +341,14 @@ public class EditContactActivity extends Activity {
 	}
 	
 	
+	/**
+	 * Generate toast and notification.
+	 *
+	 * @param ntfId the notification id
+	 * @param contactId the id of the contact being created of updated
+	 * @param shortMsg the short message displayed by the toast and notification
+	 * @param notificationMsg the longer notification message 
+	 */
 	protected void generateToastAndNotification(int ntfId, long contactId, String shortMsg, String notificationMsg) {
 		Context context = getApplicationContext();
 

@@ -1,11 +1,25 @@
 package baynes.kathleen.contacts;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ContactsConstants.
+ */
 public class ContactsConstants {
 	
+	
+	/** The Constant CONTENT_ITEM_TYPE (custom mime type used when accessing the android database). */
 	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.baynes.kathleen.contact.extensions";
+	
+	/** The Constant DISPLAY_NAME_DATA. (used by the android database) */
 	public static final String DISPLAY_NAME_DATA = "data1";
+	
+	/** The Constant BIRTHDAY_DATA. (used by the android database) */
 	public static final String BIRTHDAY_DATA = "data2";
+	
+	/** The Constant START_CONTACT_DATA. (used by the android database) */
 	public static final String START_CONTACT_DATA = "data3";
+	
+	/** The Constant END_CONTACT_DATA. (used by the android database) */
 	public static final String END_CONTACT_DATA = "data4";
 	
 	/** The Constant DISPLAY_NAME. */

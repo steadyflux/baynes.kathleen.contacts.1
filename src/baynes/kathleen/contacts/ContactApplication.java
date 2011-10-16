@@ -2,7 +2,6 @@ package baynes.kathleen.contacts;
 
 import java.util.ArrayList;
 
-import baynes.kathleen.contacts.db.ContactsDB;
 import baynes.kathleen.contacts.models.Contact;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
@@ -24,42 +23,7 @@ import android.util.Log;
 public class ContactApplication extends Application {
 
 	private static final String TAG = "baynes.kathleen.contacts";
-	/** The contact database */
-	private ContactsDB contactsDB;
-	
-	/* (non-Javadoc)
-   * @see android.app.Application#onCreate()
-   */
-  @Override
-  public void onCreate() {
-  	super.onCreate();
-  }
-
-	/* (non-Javadoc)
-   * @see android.app.Application#onLowMemory()
-   */
-  @Override
-  public void onLowMemory() {
-	  super.onLowMemory();
-	  if (contactsDB != null) {
-	  	contactsDB.close();
-	  }
-	  contactsDB = null;
-  }
-
-	/* (non-Javadoc)
-   * @see android.app.Application#onTerminate()
-   */
-  @Override
-  public void onTerminate() {
-	  super.onTerminate();
-	  if (contactsDB != null) {
-	  	contactsDB.close();
-	  }
-	  contactsDB = null;
-  }
-  
-  
+	  
   /**
    * 
    * Heavily Relied on source: 
@@ -79,14 +43,20 @@ public class ContactApplication extends Application {
 		operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
 		    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, types[0].type)
 		    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, contact.getDisplayName()).build());
+
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+		    .withValue(ContactsContract.Data.MIMETYPE, ContactsConstants.CONTENT_ITEM_TYPE)
+		    .withValue(ContactsConstants.DISPLAY_NAME_DATA, contact.getDisplayName())
+		    .withValue(ContactsConstants.BIRTHDAY_DATA, contact.getBirthday())
+		    .withValue(ContactsConstants.START_CONTACT_DATA, contact.getPreferredCallTimeStart())
+				.withValue(ContactsConstants.END_CONTACT_DATA, contact.getPreferredCallTimeEnd()).build());
 		
-		//this will change .....
 		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
 		    .withValue(ContactsContract.Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
 		    .withValue(StructuredName.GIVEN_NAME, contact.getFirstName())
-		    .withValue(StructuredName.FAMILY_NAME, contact.getLastName())
-				.withValue(StructuredName.DISPLAY_NAME, contact.getDisplayName()).build());
+		    .withValue(StructuredName.FAMILY_NAME, contact.getLastName()).build());
 		
 		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -150,11 +120,10 @@ public class ContactApplication extends Application {
 			cursor.close();
 		}
 
-		// Load the names.
+		String where = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
 		
-		String where = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?"; 
+		// Load the names.
     String[] whereParameters = new String[]{ Long.toString(contactId), StructuredName.CONTENT_ITEM_TYPE};
-
     cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
     		new String[] { StructuredName.GIVEN_NAME, StructuredName.FAMILY_NAME }, 
     		where, 
@@ -166,7 +135,7 @@ public class ContactApplication extends Application {
 			String first = null;
 			String last = null;
 			while (cursor.moveToNext()) {
-				//ensure that we arent setting null or blank values for the first and last name
+				//ensure that we aren't setting null or blank values for the first and last name
 				if (cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME)) != null
 				    && !("").equals(cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME)))) {
 					first = cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME));
@@ -184,6 +153,38 @@ public class ContactApplication extends Application {
 			cursor.close();
 		}
 
+		//load the custom data fields
+		whereParameters = new String[]{ Long.toString(contactId), StructuredName.CONTENT_ITEM_TYPE};
+    cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
+    		new String[] { ContactsConstants.DISPLAY_NAME_DATA, ContactsConstants.BIRTHDAY_DATA, ContactsConstants.START_CONTACT_DATA, ContactsConstants.END_CONTACT_DATA }, 
+    		where, 
+    		whereParameters, 
+    		null);	
+		try {
+			if (cursor.moveToFirst()) {
+				if (cursor.getString(cursor.getColumnIndex(ContactsConstants.DISPLAY_NAME_DATA)) != null
+				    && !("").equals(cursor.getString(cursor.getColumnIndex(ContactsConstants.DISPLAY_NAME_DATA)))) {
+					contact.setDisplayName(cursor.getString(cursor.getColumnIndex(ContactsConstants.DISPLAY_NAME_DATA)));
+				}
+				if (cursor.getString(cursor.getColumnIndex(ContactsConstants.BIRTHDAY_DATA)) != null
+				    && !("").equals(cursor.getString(cursor.getColumnIndex(ContactsConstants.BIRTHDAY_DATA)))) {
+					contact.setBirthday(cursor.getString(cursor.getColumnIndex(ContactsConstants.BIRTHDAY_DATA)));
+				}
+				if (cursor.getString(cursor.getColumnIndex(ContactsConstants.START_CONTACT_DATA)) != null
+				    && !("").equals(cursor.getString(cursor.getColumnIndex(ContactsConstants.START_CONTACT_DATA)))) {
+					contact.setPreferredCallTimeStart(cursor.getString(cursor
+					    .getColumnIndex(ContactsConstants.START_CONTACT_DATA)));
+				}
+				if (cursor.getString(cursor.getColumnIndex(ContactsConstants.END_CONTACT_DATA)) != null
+				    && !("").equals(cursor.getString(cursor.getColumnIndex(ContactsConstants.END_CONTACT_DATA)))) {
+					contact.setPreferredCallTimeEnd(cursor.getString(cursor.getColumnIndex(ContactsConstants.END_CONTACT_DATA)));
+				}
+			}
+				
+		} finally {
+			cursor.close();
+		}
+		
 		// Load the phone numbers.
 		cursor = getContentResolver().query(Phone.CONTENT_URI, new String[] { Phone.NUMBER, Phone.TYPE },
 		    Phone.CONTACT_ID + "=" + contactId, null, Phone.IS_SUPER_PRIMARY + " DESC");
@@ -254,6 +255,13 @@ public class ContactApplication extends Application {
 				.withSelection(where, new String[] { String.valueOf(contact.getId()), StructuredPostal.CONTENT_ITEM_TYPE })
 		    .withValue(StructuredPostal.FORMATTED_ADDRESS, contact.getAddress())
 		    .build());
+		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+				.withSelection(where, new String[] { String.valueOf(contact.getId()), ContactsConstants.CONTENT_ITEM_TYPE })
+		    .withValue(ContactsContract.Data.MIMETYPE, ContactsConstants.CONTENT_ITEM_TYPE)
+		    .withValue(ContactsConstants.DISPLAY_NAME_DATA, contact.getDisplayName())
+		    .withValue(ContactsConstants.BIRTHDAY_DATA, contact.getBirthday())
+		    .withValue(ContactsConstants.START_CONTACT_DATA, contact.getPreferredCallTimeStart())
+				.withValue(ContactsConstants.END_CONTACT_DATA, contact.getPreferredCallTimeEnd()).build());
 		
 		where = Data.CONTACT_ID + "=? and " + Data.MIMETYPE + "=? and " + Phone.TYPE + "=?";
 		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
@@ -277,7 +285,6 @@ public class ContactApplication extends Application {
 		
 		try {
 			getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
-//			Log.d(TAG, contentProviderResults[0].uri.toString());
 		} catch (Exception e) {
 			Log.e(TAG, "Exception", e);
 			throw new RuntimeException("Error updating contact", e);

@@ -2,6 +2,12 @@ package baynes.kathleen.contacts;
 
 public class ContactsConstants {
 	
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.baynes.kathleen.contact.extensions";
+	public static final String DISPLAY_NAME_DATA = "data1";
+	public static final String BIRTHDAY_DATA = "data2";
+	public static final String START_CONTACT_DATA = "data3";
+	public static final String END_CONTACT_DATA = "data4";
+	
 	/** The Constant DISPLAY_NAME. */
 	public static final String DISPLAY_NAME = "displayName";
 	

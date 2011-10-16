@@ -222,9 +222,7 @@ public class EditContactActivity extends Activity {
 				}
 				else {
 					Log.d(TAG, "updating contact: " + contact.getDisplayName());
-					//TODO implement insert
-//					contactsDB.update(contact);
-					
+					((ContactApplication) getApplication()).updateContact(contact);
 					generateToastAndNotification(CONTACT_UPDATED, contact.getId(), "Contact updated", "Contact '" + contact.getDisplayName() + "' was updated.");
 					
 				}

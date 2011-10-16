@@ -14,7 +14,6 @@
     android:layout_height="wrap_content"
     android:padding="5sp"
     android:id="@+id/display_name" />
-
   <TextView
     android:textColor="#283031"
     android:layout_width="wrap_content"

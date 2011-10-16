@@ -9,10 +9,9 @@ import android.accounts.AuthenticatorDescription;
 import android.app.Application;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
+import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -70,67 +69,69 @@ public class ContactApplication extends Application {
    */
 	public long createContact(Contact contact) {
 		Log.d(TAG, "Creating contact " + contact.getDisplayName());
+		
+		long contactId = -1;
 		ContentValues values = new ContentValues();
 		values.put(Data.DISPLAY_NAME, contact.getDisplayName());
-		ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+		ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
 		AccountManager accountManager = AccountManager.get(getApplicationContext());
 		AuthenticatorDescription[] types = accountManager.getAuthenticatorTypes();
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
 		    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, types[0].type)
 		    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, contact.getDisplayName()).build());
 		
 		//this will change .....
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.getDisplayName()).build());
+		    .withValue(ContactsContract.Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
+		    .withValue(StructuredName.GIVEN_NAME, contact.getFirstName())
+		    .withValue(StructuredName.FAMILY_NAME, contact.getLastName())
+				.withValue(StructuredName.DISPLAY_NAME, contact.getDisplayName()).build());
 		
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+		    .withValue(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+		    .withValue(Phone.NUMBER, contact.getHomePhone())
+		    .withValue(Phone.TYPE, Phone.TYPE_HOME)
+		    .build());
 		
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.getFirstName())
-		    .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, contact.getLastName()).build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.getHomePhone())
-		    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+		    .withValue(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+		    .withValue(Phone.NUMBER, contact.getWorkPhone())
+		    .withValue(Phone.TYPE, Phone.TYPE_WORK)
 		    .build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.getWorkPhone())
-		    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+		    .withValue(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+		    .withValue(Phone.NUMBER, contact.getMobilePhone())
+		    .withValue(Phone.TYPE, Phone.TYPE_MOBILE)
 		    .build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.getMobilePhone())
-		    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+		    .withValue(ContactsContract.Data.MIMETYPE, Email.CONTENT_ITEM_TYPE)
+		    .withValue(Email.DATA, contact.getEmail())
+		    .withValue(Email.TYPE, Email.TYPE_HOME)
 		    .build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+		
+		operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
 		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.Email.DATA, contact.getEmail())
-		    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_HOME)
+		    .withValue(ContactsContract.Data.MIMETYPE, StructuredPostal.CONTENT_ITEM_TYPE)
+		    .withValue(StructuredPostal.FORMATTED_ADDRESS, contact.getAddress())
 		    .build());
-		ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-		    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
-		    .withValue(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS, contact.getAddress())
-		    .build());
-		ContentProviderResult[] contentProviderResults;
+		
     try {
-	    contentProviderResults = getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-	    Log.d(TAG, "contentProviderResults: " + contentProviderResults[0].uri.toString());
-    } catch (RemoteException e) {
+    	ContentProviderResult[] contentProviderResults = getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+	    contactId = ContentUris.parseId(contentProviderResults[0].uri);
+	    Log.d(TAG, "contentProviderResults: " + contentProviderResults[0].uri);
+    } catch (Exception e) {
     	Log.e(TAG, "Exception", e);
-    } catch (OperationApplicationException e) {
-	    Log.e(TAG, "Exception", e);
+    	throw new RuntimeException("Error creating contact: ", e);
     }
 		
-		return 1;
+		return contactId;
 	}
 	
 	public Contact retrieveContact(long contactId) {
@@ -152,13 +153,13 @@ public class ContactApplication extends Application {
 		// Load the names.
 		
 		String where = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?"; 
-    String[] whereParameters = new String[]{ Long.toString(contactId), ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE};
+    String[] whereParameters = new String[]{ Long.toString(contactId), StructuredName.CONTENT_ITEM_TYPE};
 
     cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
     		new String[] { StructuredName.GIVEN_NAME, StructuredName.FAMILY_NAME }, 
     		where, 
     		whereParameters, 
-    		ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
+    		StructuredName.GIVEN_NAME);
     
 		try {
 			//this is setting the names as the last non-null/non-blank value from the list of all raw contact names, this isn't strictly "correct", but its a decent guess
@@ -241,6 +242,47 @@ public class ContactApplication extends Application {
 	public void updateContact(Contact contact) {
 		Log.d(TAG, "Updating contact " + contact.getDisplayName());
 		Log.d(TAG, "Contact Id: " + contact.getId());
+		ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+
+		String where = Data.CONTACT_ID + "=? and " + Data.MIMETYPE + "=?";
+		operations.add(ContentProviderOperation.newUpdate(Data.CONTENT_URI)
+		    .withSelection(where, new String[] { String.valueOf(contact.getId()), StructuredName.CONTENT_ITEM_TYPE })
+		    .withValue(StructuredName.FAMILY_NAME, contact.getLastName())
+		    .withValue(StructuredName.GIVEN_NAME, contact.getFirstName())
+    		.withValue(StructuredName.DISPLAY_NAME, contact.getDisplayName()).build());
+		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+				.withSelection(where, new String[] { String.valueOf(contact.getId()), StructuredPostal.CONTENT_ITEM_TYPE })
+		    .withValue(StructuredPostal.FORMATTED_ADDRESS, contact.getAddress())
+		    .build());
+		
+		where = Data.CONTACT_ID + "=? and " + Data.MIMETYPE + "=? and " + Phone.TYPE + "=?";
+		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+				.withSelection(where, new String[] { String.valueOf(contact.getId()), Phone.CONTENT_ITEM_TYPE, Integer.toString(Phone.TYPE_HOME) })
+		    .withValue(Phone.NUMBER, contact.getHomePhone())
+		    .build());
+		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+				.withSelection(where, new String[] { String.valueOf(contact.getId()), Phone.CONTENT_ITEM_TYPE, Integer.toString(Phone.TYPE_WORK) })
+		    .withValue(Phone.NUMBER, contact.getWorkPhone())
+		    .build());
+		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+				.withSelection(where, new String[] { String.valueOf(contact.getId()), Phone.CONTENT_ITEM_TYPE, Integer.toString(Phone.TYPE_MOBILE) })
+		    .withValue(Phone.NUMBER, contact.getMobilePhone())
+		    .build());
+		
+		where = Data.CONTACT_ID + "=? and " + Data.MIMETYPE + "=? and " + Email.TYPE + "=?";
+		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+				.withSelection(where, new String[] { String.valueOf(contact.getId()), Email.CONTENT_ITEM_TYPE, Integer.toString(Email.TYPE_HOME) })
+		    .withValue(Email.DATA, contact.getEmail())
+		    .build());
+		
+		try {
+			getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+//			Log.d(TAG, contentProviderResults[0].uri.toString());
+		} catch (Exception e) {
+			Log.e(TAG, "Exception", e);
+			throw new RuntimeException("Error updating contact", e);
+		}
+
 	}
 	
 }

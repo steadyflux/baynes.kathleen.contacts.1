@@ -16,7 +16,6 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
-import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
 import android.util.Log;
 
@@ -108,23 +107,12 @@ public class ContactApplication extends Application {
 		Contact contact = new Contact();
 		Log.d(TAG, "Retrieving contact " + contactId);
 
-		Cursor cursor = getContentResolver().query(Contacts.CONTENT_URI,
-		    new String[] { Contacts._ID, Contacts.DISPLAY_NAME }, Contacts._ID + " = " + contactId, null, null);
-		try {
-			if (cursor.moveToFirst()) {
-				contact.setId(cursor.getLong(cursor.getColumnIndex(Contacts._ID)));
-				contact.setDisplayName(cursor.getString(cursor.getColumnIndex(Contacts.DISPLAY_NAME)));
-				Log.d(TAG, "Display Name for " + contact.getId() + ": " + contact.getDisplayName());
-			}
-		} finally {
-			cursor.close();
-		}
-
+		contact.setId(contactId);
 		String where = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
 		
 		// Load the names.
     String[] whereParameters = new String[]{ Long.toString(contactId), StructuredName.CONTENT_ITEM_TYPE};
-    cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
+    Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
     		new String[] { StructuredName.GIVEN_NAME, StructuredName.FAMILY_NAME }, 
     		where, 
     		whereParameters, 
@@ -154,7 +142,7 @@ public class ContactApplication extends Application {
 		}
 
 		//load the custom data fields
-		whereParameters = new String[]{ Long.toString(contactId), StructuredName.CONTENT_ITEM_TYPE};
+		whereParameters = new String[]{ Long.toString(contactId), ContactsConstants.CONTENT_ITEM_TYPE};
     cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
     		new String[] { ContactsConstants.DISPLAY_NAME_DATA, ContactsConstants.BIRTHDAY_DATA, ContactsConstants.START_CONTACT_DATA, ContactsConstants.END_CONTACT_DATA }, 
     		where, 
@@ -249,15 +237,13 @@ public class ContactApplication extends Application {
 		operations.add(ContentProviderOperation.newUpdate(Data.CONTENT_URI)
 		    .withSelection(where, new String[] { String.valueOf(contact.getId()), StructuredName.CONTENT_ITEM_TYPE })
 		    .withValue(StructuredName.FAMILY_NAME, contact.getLastName())
-		    .withValue(StructuredName.GIVEN_NAME, contact.getFirstName())
-    		.withValue(StructuredName.DISPLAY_NAME, contact.getDisplayName()).build());
+		    .withValue(StructuredName.GIVEN_NAME, contact.getFirstName()).build());
 		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
 				.withSelection(where, new String[] { String.valueOf(contact.getId()), StructuredPostal.CONTENT_ITEM_TYPE })
 		    .withValue(StructuredPostal.FORMATTED_ADDRESS, contact.getAddress())
 		    .build());
 		operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
 				.withSelection(where, new String[] { String.valueOf(contact.getId()), ContactsConstants.CONTENT_ITEM_TYPE })
-		    .withValue(ContactsContract.Data.MIMETYPE, ContactsConstants.CONTENT_ITEM_TYPE)
 		    .withValue(ContactsConstants.DISPLAY_NAME_DATA, contact.getDisplayName())
 		    .withValue(ContactsConstants.BIRTHDAY_DATA, contact.getBirthday())
 		    .withValue(ContactsConstants.START_CONTACT_DATA, contact.getPreferredCallTimeStart())

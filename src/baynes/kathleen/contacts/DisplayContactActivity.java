@@ -79,7 +79,7 @@ public class DisplayContactActivity extends Activity {
 			 */
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, contact.getDisplayName() + " was clicked");
+				Log.d(TAG, contact.getDisplayName() + " [" + contact.getId() + "] was clicked");
 				Intent editIntent = EditContactActivity.createIntent(DisplayContactActivity.this, contact.getId());
 				startActivityForResult(editIntent, EDIT_RESULT);
 			}
@@ -119,6 +119,7 @@ public class DisplayContactActivity extends Activity {
 		((TextView) findViewById(R.id.email_value)).setText(contact.getEmail());
 		((TextView) findViewById(R.id.address_value)).setText(contact.getAddress());
 		
+		Log.d(TAG, "populated display data screen: " + contact.getDisplayName() + " [" + contact_id  + "]" );
 	}
 
 	/** 
